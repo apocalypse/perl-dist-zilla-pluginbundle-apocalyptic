@@ -12,10 +12,6 @@ sub mvp_bundle_config {
 	return (
 		# some basics we need
 		[ '@Apocalyptic/CorePrep',	_exp('@CorePrep'), {} ],
-		[ '@Apocalyptic/TransformList',	_exp('Transformer'), {
-			transformer => 'List',
-			format_name => 'outline',
-		} ],
 
 		# Start the POD!
 		[ '@Apocalyptic/Name',		_exp('Name'), {} ],
@@ -47,11 +43,15 @@ sub mvp_bundle_config {
 		} ],
 
 		# The usual end of POD...
-		# TODO only do this for the main module?
 		[ '@Apocalyptic/SeeAlso',	_exp('SeeAlso'), {} ],
 		[ '@Apocalyptic/Support',	_exp('Support'), {} ],
 		[ '@Apocalyptic/Authors',	_exp('Authors'), {} ],
-		[ '@Apocalyptic/Legal',		_exp('Legal'), {} ],
+		[ '@Apocalyptic/Legal',		_exp('Legal'), {
+			filename => 'LICENSE',
+		} ],
+
+		# Mangle the entire POD
+		[ '@Apocalyptic/ListTransformer',	_exp('-Transformer'), { transformer => 'List' } ],
 	);
 }
 
@@ -97,49 +97,6 @@ It is nearly equivalent to the following:
 =head1 TODO
 
 What I want to do is...
-
-=head2 Add my usual SUPPORT section automatically
-
-This only exists in the main module, not submodules
-
-also, automatically add the =for pod_spelling FOO BAR BAZ stuff preceding it
-
-=head2 Add DISCLAIMER OF WARRANTY head1 section
-
-DISCLAIMER OF WARRANTY
-
-BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
-OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
-EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
-ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
-YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
-NECESSARY SERVICING, REPAIR, OR CORRECTION.
-
-IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENSE, BE
-LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
-OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
-THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
-RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
-SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGES.
-
-( Where can I get this text? Software::License? )
-
-Also, this exists only in the main module
-
-=head2 munge the LICENSE section a bit
-
-I want to add the "The license can also be read in LICENSE in this dist..." under the auto-generated license section
-
-=head2 SEE ALSO section
-
-Automatically add a link from submodules to main module + whatever was specified if the section existed
 
 =head2 Add "ACKNOWLEDGEMENTS" as sub-section of AUTHOR
 
