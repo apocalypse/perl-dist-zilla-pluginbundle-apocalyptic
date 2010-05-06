@@ -1,34 +1,58 @@
 package Pod::Weaver::PluginBundle::Apocalyptic;
 
-# ABSTRACT: a bundle for the most commonly-needed prep work for a pod document
+# ABSTRACT: Let the apocalypse generate your POD!
 
-use namespace::autoclean;
+use Pod::Weaver::Config::Assembler 3.100710;
 
-use Pod::Weaver::Config::Assembler;
-sub _exp { Pod::Weaver::Config::Assembler->expand_package($_[0]) }
+sub _exp {
+	Pod::Weaver::Config::Assembler->expand_package( $_[0] );
+}
 
 sub mvp_bundle_config {
-  return (
-    [ '@Default/CorePrep',  _exp('@CorePrep'), {} ],
-    [ '@Default/Name',      _exp('Name'),      {} ],
-    [ '@Default/Version',   _exp('Version'),   {} ],
+	return (
+		# some basics we need
+		[ '@Apocalyptic/CorePrep',	_exp('@CorePrep'), {} ],
+		[ '@Apocalyptic/TransformList',	_exp('Transformer'), {
+			transformer => 'List',
+			format_name => 'outline',
+		} ],
 
-    [ '@Default/prelude',   _exp('Region'),    { region_name => 'prelude'  } ],
-    [ 'SYNOPSIS',           _exp('Generic'),   {} ],
-    [ 'DESCRIPTION',        _exp('Generic'),   {} ],
-    [ 'OVERVIEW',           _exp('Generic'),   {} ],
+		# Start the POD!
+		[ '@Apocalyptic/Name',		_exp('Name'), {} ],
+		[ '@Apocalyptic/Version',	_exp('Version'), {} ],
+		[ '@Apocalyptic/Prelude',	_exp('Region'), {
+			region_name => 'prelude',
+		} ],
 
-    [ 'ATTRIBUTES',         _exp('Collect'),   { command => 'attr'   } ],
-    [ 'METHODS',            _exp('Collect'),   { command => 'method' } ],
-    [ 'FUNCTIONS',          _exp('Collect'),   { command => 'func'   } ],
+		# The standard sections
+		[ 'SYNOPSIS',		_exp('Generic'), {} ],
+		[ 'DESCRIPTION',	_exp('Generic'), {} ],
+		[ 'OVERVIEW',		_exp('Generic'), {} ],
 
-    [ '@Default/Leftovers', _exp('Leftovers'), {} ],
+		# Our subs
+		[ 'ATTRIBUTES',		_exp('Collect'), {
+			command => 'attr',
+		} ],
+		[ 'METHODS',		_exp('Collect'), {
+			command => 'method',
+		} ],
+		[ 'FUNCTIONS',		_exp('Collect'), {
+			command => 'func',
+		} ],
 
-    [ '@Default/postlude',  _exp('Region'),    { region_name => 'postlude' } ],
+		# The rest of the POD...
+		[ '@Apocalyptic/Leftovers',	_exp('Leftovers'), {} ],
+		[ '@Apocalyptic/Postlude',	_exp('Region'), {
+			region_name => 'postlude',
+		} ],
 
-    [ '@Default/Authors',   _exp('Authors'),   {} ],
-    [ '@Default/Legal',     _exp('Legal'),     {} ],
-  )
+		# The usual end of POD...
+		# TODO only do this for the main module?
+		[ '@Apocalyptic/SeeAlso',	_exp('SeeAlso'), {} ],
+		[ '@Apocalyptic/Support',	_exp('Support'), {} ],
+		[ '@Apocalyptic/Authors',	_exp('Authors'), {} ],
+		[ '@Apocalyptic/Legal',		_exp('Legal'), {} ],
+	);
 }
 
 1;
@@ -109,6 +133,10 @@ SUCH DAMAGES.
 
 Also, this exists only in the main module
 
+=head2 munge the LICENSE section a bit
+
+I want to add the "The license can also be read in LICENSE in this dist..." under the auto-generated license section
+
 =head2 SEE ALSO section
 
 Automatically add a link from submodules to main module + whatever was specified if the section existed
@@ -116,5 +144,25 @@ Automatically add a link from submodules to main module + whatever was specified
 =head2 Add "ACKNOWLEDGEMENTS" as sub-section of AUTHOR
 
 So I can give the proper props :)
+
+=head2 auto image in POD?
+
+=begin HTML
+<p><img src="http://i.imgur.com/Hb2cD.png" width="600"></p>
+=end HTML
+
+Saw that in http://search.cpan.org/~wonko/Smolder-1.51/lib/Smolder.pm
+
+Maybe we can make a transformer to automatically do that? ( =image http://blah.com/foo.png )
+
+<jhannah> Apocalypse: ya, right? cool and dangerous and prone to FAIL as URLs become invalid... :/
+<jhannah> I'd hate to see craptons of broken images on s.c.o   :(
+<Apocalypse> Yeah jhannah it would be best if you could include the image in the dist itself... but that's a problem for another day :)
+<jhannah> Apocalypse: it'd be trivial to include the .jpg in the .tgz... but what's the POD markup for that? and would s.c.o. do it correctly?
+<jhannah> =begin HTML is ... eep
+<Apocalypse> I think you could do it via sneaky means but it's prone to breakage
+<Apocalypse> i.e. include it in dist as My-Foo-Dist/misc/image.png and link to it via s.c.o's "browse dist" directory
+<Apocalypse> i.e. link to http://cpansearch.perl.org/src/WONKO/Smolder-1.51/misc/image.png
+<Apocalypse> I should try that sneaky tactic and see if it works =]
 
 =cut

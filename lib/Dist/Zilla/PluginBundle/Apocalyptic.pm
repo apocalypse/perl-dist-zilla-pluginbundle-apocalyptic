@@ -180,6 +180,8 @@ EOC
 	[
 		'MetaResources' => {
 			# TODO add the usual list of stuff found in my POD? ( cpants, bla bla )
+			# seen in DZPB::AVAR - Ratings => "http://cpanratings.perl.org/d/$dist"
+			# seen in DZPB::PDONELAN - ratings ( lc R... which should I pick? hah )
 			'license'	=> 'http://dev.perl.org/licenses/',
 		},
 	], );
@@ -422,5 +424,31 @@ or the desired plugin configuration manually.
 =head1 SEE ALSO
 
 L<Dist::Zilla>
+
+=head2 TODO
+
+I saw this in the Moose code:
+
+	our $AUTHORITY = 'cpan:STEVAN';
+
+Should I do that too? It could be added to dzil, I hope RJBS will accept the patches for it :)
+
+=head2 Plugins considered for inclusion but rejected
+
+=head3 CheckChangeLog
+
+It doesn't seem to work? I set it to "Changes" but it complained... Have to investigate more
+
+=head3 PerlTidy
+
+I never use PerlTidy myself, so this is irrelevant
+
+=head3 *Tests
+
+My ApocalypseTests plugin handles most of this, and if I find any useful ones I will add it to L<Test::Apocalypse> instead of adding yet another plugin.
+
+=head3 ReportVersions
+
+This seems nifty, but do I *really* need it? CPANTesters already does a good job of reporting prereqs when it submits a report...
 
 =cut
