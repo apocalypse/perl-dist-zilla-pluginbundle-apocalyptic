@@ -21,7 +21,7 @@ sub weave_section {
 
 	# Is the SEE ALSO section already in the POD?
 	my $see_also;
-	foreach my $i ( 0 .. scalar @{ $input->{pod_document}->children } ) {
+	foreach my $i ( 0 .. $#{ $input->{pod_document}->children } ) {
 		my $para = $input->{pod_document}->children->[$i];
 		next unless $para->isa('Pod::Elemental::Element::Nested')
 			and $para->command eq 'head1'

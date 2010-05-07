@@ -51,7 +51,13 @@ sub mvp_bundle_config {
 		} ],
 
 		# Mangle the entire POD
-		[ '@Apocalyptic/ListTransformer',	_exp('-Transformer'), { transformer => 'List' } ],
+		[ '@Apocalyptic/ListTransformer',	_exp('-Transformer'), {
+			transformer => 'List',
+		} ],
+		[ '@Apocalyptic/ImageTransformer',	_exp('-Transformer'), {
+			transformer => 'Images',
+			dist => 'bar',
+		} ],
 	);
 }
 
