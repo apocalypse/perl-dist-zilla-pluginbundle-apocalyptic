@@ -4,6 +4,10 @@ package Pod::Weaver::PluginBundle::Apocalyptic;
 
 use Pod::Weaver::Config::Assembler 3.100710;
 
+# The plugins we use
+use Pod::Weaver::Section::SeeAlso;
+use Pod::Weaver::Section::Support 0.006;
+
 sub _exp {
 	Pod::Weaver::Config::Assembler->expand_package( $_[0] );
 }
@@ -13,57 +17,80 @@ sub mvp_bundle_config {
 		# some basics we need
 		[ '@Apocalyptic/CorePrep',	_exp('@CorePrep'), {} ],
 
+		# Move our special markers to the start of the POD
+		[ '@Apocalyptic/PodCoverage',	_exp('Region'), {
+			region_name	=> 'Pod::Coverage',
+			allow_nonpod	=> 1,
+			flatten		=> 0,
+		} ],
+		[ '@Apocalyptic/PodSpelling',	_exp('Region'), {
+			region_name	=> 'stopwords',
+			allow_nonpod	=> 1,
+			flatten		=> 0,
+		} ],
+
 		# Start the POD!
 		[ '@Apocalyptic/Name',		_exp('Name'), {} ],
-		[ '@Apocalyptic/Version',	_exp('Version'), {} ],
-		[ '@Apocalyptic/Prelude',	_exp('Region'), {
-			region_name => 'prelude',
+		[ '@Apocalyptic/Version',	_exp('Version'), {
+			format		=> 'This document describes v%v of %m - released %{LLLL dd, yyyy}d as part of %r.',
+			is_verbatim	=> 1,
 		} ],
 
 		# The standard sections
-		[ 'SYNOPSIS',		_exp('Generic'), {} ],
-		[ 'DESCRIPTION',	_exp('Generic'), {} ],
-		[ 'OVERVIEW',		_exp('Generic'), {} ],
+		[ '@Apocalyptic/Synopsis',	_exp('Generic'), {
+			header		=> 'SYNOPSIS',
+		} ],
+		[ '@Apocalyptic/Description',	_exp('Generic'), {
+			header		=> 'DESCRIPTION',
+			required	=> 1,
+		} ],
+		[ '@Apocalyptic/Overview',	_exp('Generic'), {
+			header		=> 'OVERVIEW',
+		} ],
 
 		# Our subs
-		[ 'ATTRIBUTES',		_exp('Collect'), {
-			command => 'attr',
+		[ '@Apocalyptic/Attributes',	_exp('Collect'), {
+			header		=> 'ATTRIBUTES',
+			command		=> 'attr',
 		} ],
-		[ 'METHODS',		_exp('Collect'), {
-			command => 'method',
+		[ '@Apocalyptic/Methods',	_exp('Collect'), {
+			header		=> 'METHODS',
+			command		=> 'method',
 		} ],
-		[ 'FUNCTIONS',		_exp('Collect'), {
-			command => 'func',
+		[ '@Apocalyptic/Functions',	_exp('Collect'), {
+			header		=> 'FUNCTIONS',
+			command		=> 'func',
 		} ],
 
-		# The rest of the POD...
+		# Anything that wasn't matched gets dumped here
 		[ '@Apocalyptic/Leftovers',	_exp('Leftovers'), {} ],
-		[ '@Apocalyptic/Postlude',	_exp('Region'), {
-			region_name => 'postlude',
-		} ],
 
 		# The usual end of POD...
 		[ '@Apocalyptic/SeeAlso',	_exp('SeeAlso'), {} ],
 		[ '@Apocalyptic/Support',	_exp('Support'), {} ],
 		[ '@Apocalyptic/Authors',	_exp('Authors'), {} ],
 		[ '@Apocalyptic/Legal',		_exp('Legal'), {
-			filename => 'LICENSE',
+			filename	=> 'LICENSE',
 		} ],
 
 		# Mangle the entire POD
 		[ '@Apocalyptic/ListTransformer',	_exp('-Transformer'), {
-			transformer => 'List',
+			transformer	=> 'List',
 		} ],
-		[ '@Apocalyptic/ImageTransformer',	_exp('-Transformer'), {
-			transformer => 'Images',
-			dist => 'bar',
-		} ],
+
+		# TODO this concept needs more work...
+#		[ '@Apocalyptic/ImageTransformer',	_exp('-Transformer'), {
+#			transformer	=> 'Images',
+#		} ],
 	);
 }
 
 1;
 
 =pod
+
+=for Pod::Coverage
+mvp_bundle_config
 
 =head1 DESCRIPTION
 
