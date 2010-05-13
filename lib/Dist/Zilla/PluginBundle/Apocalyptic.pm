@@ -10,51 +10,30 @@ use File::HomeDir 0.88;
 use Dist::Zilla::Role::PluginBundle::Easy 2.101310;
 with 'Dist::Zilla::Role::PluginBundle::Easy';
 
-# The plugins we use
+# The plugins we use ( excluding ones bundled in dzil )
 use Dist::Zilla::Plugin::BumpVersionFromGit 0.006;
-use Dist::Zilla::Plugin::GatherDir 2.101310;
-use Dist::Zilla::Plugin::PruneCruft 2.101310;
-use Dist::Zilla::Plugin::AutoPrereq 2.101310;
-use Dist::Zilla::Plugin::GenerateFile 2.101310;
-use Dist::Zilla::Plugin::ManifestSkip 2.101310;
 use Dist::Zilla::Plugin::CompileTests 1.100740;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
 use Dist::Zilla::Plugin::Prepender 1.100960;
 use Dist::Zilla::Plugin::Authority 0.01;
-use Dist::Zilla::Plugin::PkgVersion 2.101310;
 use Dist::Zilla::Plugin::PodWeaver 3.100710;
 use Pod::Weaver::PluginBundle::Apocalyptic;	# TODO put it in a separate dist so I can specify the ver...
-use Dist::Zilla::Plugin::NextRelease 2.101310;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
-use Dist::Zilla::Plugin::ExecDir 2.101310;
-use Dist::Zilla::Plugin::ShareDir 2.101310;
 use Dist::Zilla::Plugin::MinimumPerl 0.02;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.10001919;
 use Dist::Zilla::Plugin::Bugtracker 1.100701;
 use Dist::Zilla::Plugin::Homepage 1.100700;
-use Dist::Zilla::Plugin::MetaConfig 2.101310;
 use Dist::Zilla::Plugin::Repository 0.11;
-use Dist::Zilla::Plugin::MetaResources 2.101310;
 use Dist::Zilla::Plugin::MetaNoIndex 1.101130;
 use Dist::Zilla::Plugin::License 2.101310;
-use Dist::Zilla::Plugin::MakeMaker 2.101310;
-use Dist::Zilla::Plugin::ModuleBuild 2.101310;
 use Dist::Zilla::Plugin::DualBuilders 0.02;
-use Dist::Zilla::Plugin::MetaYAML 2.101310;
-use Dist::Zilla::Plugin::MetaJSON 2.101310;
 use Dist::Zilla::Plugin::ReadmeFromPod 0.09;
 use Dist::Zilla::Plugin::InstallGuide 1.100701;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::Manifest 2.101310;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
-use Dist::Zilla::Plugin::Git::Check 1.100970;
-use Dist::Zilla::Plugin::ConfirmRelease 2.101310;
-use Dist::Zilla::Plugin::UploadToCPAN 2.101310;
-use Dist::Zilla::Plugin::FakeRelease 2.101310;
+use Dist::Zilla::Plugin::Git 1.101330;
 use Dist::Zilla::Plugin::ArchiveRelease 0.09;
-use Dist::Zilla::Plugin::Git::Commit 1.100970;
-use Dist::Zilla::Plugin::Git::Tag 1.100970;
-use Dist::Zilla::Plugin::Git::Push 1.100970;
 
 sub configure {
 	my $self = shift;
@@ -78,7 +57,7 @@ sub configure {
 		'GenerateFile', 'MANIFEST.SKIP', {
 			'filename'	=> 'MANIFEST.SKIP',
 			'content'	=> <<'EOC',
-# Added by Dist::Zilla::PluginBundle::Apocalyptic
+# Added by Dist::Zilla::PluginBundle::Apocalyptic v{{$Dist::Zilla::PluginBundle::Apocalyptic::VERSION}}
 
 # skip Eclipse IDE stuff
 \.includepath$
@@ -231,13 +210,14 @@ EOC
 		MetaJSON
 		ReadmeFromPod
 		InstallGuide
-	), );
-
-	# TODO How do we detect a configured Module::Signature?
-#	$self->add_plugin( 'Signature' => {
-#		'sign' => 'always',
-#	} );
-	$self->add_plugins( 'Manifest' );
+	),
+	[
+		'Signature' => {
+			'sign' => 'release',
+		}
+	],
+		'Manifest',
+	);
 
 #	; -- pre-release
 	$self->add_plugins(
@@ -272,7 +252,7 @@ EOC
 	[
 		'Git::Commit' => {
 			'changelog'	=> 'Changes',
-			'commit_msg'	=> 'New CPAN release of %N - v%v',
+			'commit_msg'	=> 'New CPAN release of %N - v%v%n%n%c',
 		}
 	],
 	[
@@ -382,8 +362,8 @@ This is equivalent to setting this in your dist.ini:
 	[MetaJSON]			; create META.json file
 	[ReadmeFromPod]			; create README file
 	[InstallGuide]			; create INSTALL file
-	[Signature]			; create SIGNATURE file when we are building ( if Module::Signature is setup )
-	sign = always
+	[Signature]			; create SIGNATURE file when we are releasing ( annoying to enter password during test builds... )
+	sign = release
 	[Manifest]			; finally, create the MANIFEST file
 
 	; -- pre-release
@@ -395,13 +375,14 @@ This is equivalent to setting this in your dist.ini:
 
 	; -- release
 	[UploadToCPAN]			; upload your dist to CPAN using CPAN::Uploader ( if .pause file exists in HOME dir or dist dir )
+					; if not, we will use [FakeRelease] so you can still release :)
 
 	; -- post-release
 	[ArchiveRelease]		; archive our tarballs under releases/
 	directory = releases
 	[Git::Commit]			; commit the dzil-generated stuff
 	changelog = Changes
-	commit_msg = New CPAN release of %N - v%v
+	commit_msg = New CPAN release of %N - v%v%n%n%c
 	[Git::Tag]			; tag our new release
 	tag_format = release-%v
 	tag_message = Tagged release-%v
@@ -436,24 +417,6 @@ You can pass various attributes to this module in F<dist.ini> and they are:
 
 The PAUSE id you want to use when building the dist. As of now it's only used for the L<Dist::Zilla::Plugin::Authority> plugin but
 in the future there might be other uses for it. Required.
-
-=head2 Plugins considered for inclusion but rejected
-
-=head3 CheckChangeLog
-
-It doesn't like my Changes format and my L<Test::Apocalypse> suite already checks for Changelog stuff...
-
-=head3 PerlTidy
-
-I never use PerlTidy myself, so this is irrelevant
-
-=head3 *Tests
-
-My ApocalypseTests plugin handles most of this, and if I find any useful ones I will add it to L<Test::Apocalypse> instead of adding yet another plugin.
-
-=head3 ReportVersions
-
-This seems nifty, but do I *really* need it? CPANTesters already does a good job of reporting prereqs when it submits a report...
 
 =head1 SEE ALSO
 

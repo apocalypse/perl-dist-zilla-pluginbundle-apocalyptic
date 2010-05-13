@@ -4,9 +4,9 @@ package Pod::Weaver::PluginBundle::Apocalyptic;
 
 use Pod::Weaver::Config::Assembler 3.100710;
 
-# The plugins we use
-use Pod::Weaver::Section::SeeAlso;
-use Pod::Weaver::Section::Support 0.006;
+# The plugins we use ( excluding ones bundled in podweaver )
+use Pod::Weaver::Section::SeeAlso 0.001;
+use Pod::Weaver::Section::Support 0.008;
 
 sub _exp {
 	Pod::Weaver::Config::Assembler->expand_package( $_[0] );
