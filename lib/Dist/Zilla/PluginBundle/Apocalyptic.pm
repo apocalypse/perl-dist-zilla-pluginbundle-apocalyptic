@@ -23,7 +23,7 @@ use Dist::Zilla::Plugin::Prepender 1.100960;
 use Dist::Zilla::Plugin::Authority 0.01;
 use Dist::Zilla::Plugin::PkgVersion 2.101310;
 use Dist::Zilla::Plugin::PodWeaver 3.100710;
-use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
+use Pod::Weaver::PluginBundle::Apocalyptic;	# TODO put it in a separate dist so I can specify the ver...
 use Dist::Zilla::Plugin::NextRelease 2.101310;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
 use Dist::Zilla::Plugin::ExecDir 2.101310;
@@ -46,6 +46,7 @@ use Dist::Zilla::Plugin::ReadmeFromPod 0.09;
 use Dist::Zilla::Plugin::InstallGuide 1.100701;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::Manifest 2.101310;
+use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git::Check 1.100970;
 use Dist::Zilla::Plugin::ConfirmRelease 2.101310;
 use Dist::Zilla::Plugin::UploadToCPAN 2.101310;
@@ -162,7 +163,7 @@ EOC
 		'NextRelease' => {
 			'time_zone'	=> 'UTC',
 			'filename'	=> 'Changes',
-			'format'	=> '* %v%n%tReleased: %{yyyy-MM-dd HH:mm:ss VVVV}d',
+			'format'	=> '%v%n%tReleased: %{yyyy-MM-dd HH:mm:ss VVVV}d',
 		}
 	],
 	[
@@ -240,6 +241,11 @@ EOC
 
 #	; -- pre-release
 	$self->add_plugins(
+	[
+		'CheckChangesHasContent' => {
+			'changelog'	=> 'Changes',
+		}
+	],
 	[
 		'Git::Check' => {
 			'changelog'	=> 'Changes',
@@ -340,7 +346,7 @@ This is equivalent to setting this in your dist.ini:
 	[NextRelease]
 	time_zone = UTC
 	filename = Changes
-	format = * %v%n%tReleased: %{yyyy-MM-dd HH:mm:ss VVVV}d
+	format = %v%n%tReleased: %{yyyy-MM-dd HH:mm:ss VVVV}d
 	[ChangelogFromGit]		; generate CommitLog from git history
 	tag_regexp = ^release-(.+)$
 	file_name = CommitLog
@@ -381,6 +387,8 @@ This is equivalent to setting this in your dist.ini:
 	[Manifest]			; finally, create the MANIFEST file
 
 	; -- pre-release
+	[CheckChangesHasContent]	; make sure you explained your changes :)
+	changelog = Changes
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
 	[ConfirmRelease]		; double-check that we ACTUALLY want a release, ha!

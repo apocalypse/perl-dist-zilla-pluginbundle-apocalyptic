@@ -42,7 +42,7 @@ sub mvp_bundle_config {
 		} ],
 		[ '@Apocalyptic/Description',	_exp('Generic'), {
 			header		=> 'DESCRIPTION',
-			required	=> 1,
+#			required	=> 1, # TODO huh? it doesn't work for dzpb::apocalyptic?
 		} ],
 		[ '@Apocalyptic/Overview',	_exp('Generic'), {
 			header		=> 'OVERVIEW',
