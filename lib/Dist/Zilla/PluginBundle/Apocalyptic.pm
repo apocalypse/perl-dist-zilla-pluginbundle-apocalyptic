@@ -35,6 +35,13 @@ use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.101330;
 use Dist::Zilla::Plugin::ArchiveRelease 0.09;
 
+=attr pauseid
+
+The PAUSE id you want to use when building the dist. As of now it's only used for the L<Dist::Zilla::Plugin::Authority> plugin but
+in the future there might be other uses for it. Required.
+
+=cut
+
 sub configure {
 	my $self = shift;
 	my $args = $self->payload;
@@ -409,14 +416,26 @@ or the desired plugin configuration manually.
 	[Git::Push]
 	push_to = gitorious
 
-=head2 Attributes
+=head1 TODO
 
-You can pass various attributes to this module in F<dist.ini> and they are:
+I would like to start digging into the C<dzil new> command and see how to automate stuff in it. Current todo list:
 
-=head3 pauseid
+=head2 github integration
 
-The PAUSE id you want to use when building the dist. As of now it's only used for the L<Dist::Zilla::Plugin::Authority> plugin but
-in the future there might be other uses for it. Required.
+automatically create github repo + set description/homepage via L<Dist::Zilla::Plugin::UpdateGitHub> and L<App::GitHub::create> or L<App::GitHub>
+GitHub needs a README - can we extract it and upload it on release? ( the current L<Dist::Zilla::Plugin::Readme> doesn't extract the entire POD... )
+
+=head2 gitorious integration
+
+unfortunately there's no perl API for gitorious? L<http://www.mail-archive.com/gitorious@googlegroups.com/msg01016.html>
+
+=head2 .gitignore creation
+
+it should contain only one line - the damned dist build dir...
+
+=head2 submit project to ohloh
+
+we need more perl projects on ohloh! there's L<WWW::Ohloh::API>
 
 =head1 SEE ALSO
 
