@@ -42,12 +42,14 @@ in the future there might be other uses for it. Required.
 
 =cut
 
+has 'pauseid' => (
+	is => 'ro',
+	isa => 'Str',
+	required => 1,
+);
+
 sub configure {
 	my $self = shift;
-	my $args = $self->payload;
-
-	# We need the pauseid
-	my $pauseid = $args->{pauseid} or die "PAUSEID is required";
 
 #	; -- start off by bumping the version
 	$self->add_plugins( [ 'BumpVersionFromGit' => {
@@ -132,7 +134,7 @@ EOC
 	],
 	[
 		'Authority' => {
-			'authority'	=> 'cpan:' . $pauseid,
+			'authority'	=> 'cpan:' . $self->pauseid,
 			'do_metadata'	=> 1,
 		}
 	],
@@ -432,6 +434,10 @@ unfortunately there's no perl API for gitorious? L<http://www.mail-archive.com/g
 =head2 .gitignore creation
 
 it should contain only one line - the damned dist build dir...
+
+=head2 Eclipse files creation
+
+create the .project/.includepath/.settings stuff
 
 =head2 submit project to ohloh
 
