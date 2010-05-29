@@ -67,6 +67,9 @@ sub mvp_bundle_config {
 		[ '@Apocalyptic/SeeAlso',	_exp('SeeAlso'), {} ],
 		[ '@Apocalyptic/Support',	_exp('Support'), {} ],
 		[ '@Apocalyptic/Authors',	_exp('Authors'), {} ],
+		[ '@Apocalyptic/ACK',		_exp('Generic'), {
+			header		=> 'ACKNOWLEDGEMENTS',
+		} ],
 		[ '@Apocalyptic/Legal',		_exp('Legal'), {
 			filename	=> 'LICENSE',
 		} ],
@@ -80,10 +83,7 @@ sub mvp_bundle_config {
 
 1;
 
-=pod
-
-=for Pod::Coverage
-mvp_bundle_config
+=for Pod::Coverage mvp_bundle_config
 
 =head1 DESCRIPTION
 
@@ -123,7 +123,7 @@ It is nearly equivalent to the following in your F<weaver.ini>:
 	[-Transformer]			; mangle all :list pod into proper lists via L<Pod::Elemental::Transformer::List>
 	transformer = List
 
-=head1 TODO
+=head1 Future Plans
 
 =head2 auto image in POD?
 

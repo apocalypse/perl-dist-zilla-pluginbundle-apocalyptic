@@ -38,14 +38,16 @@ use Dist::Zilla::Plugin::ArchiveRelease 0.09;
 =attr pauseid
 
 The PAUSE id you want to use when building the dist. As of now it's only used for the L<Dist::Zilla::Plugin::Authority> plugin but
-in the future there might be other uses for it. Required.
+in the future there might be other uses for it.
+
+The default is: APOCAL
 
 =cut
 
 has 'pauseid' => (
 	is => 'ro',
 	isa => 'Str',
-	required => 1,
+	default => 'APOCAL',
 );
 
 sub configure {
@@ -309,7 +311,7 @@ This is equivalent to setting this in your dist.ini:
 	version_regexp = ^release-(.+)$
 
 	; -- start the basic dist skeleton
-	[AllFiles]			; we start with everything in the dist dir
+	[GatherDir]			; we start with everything in the dist dir
 	[PruneCruft]			; automatically prune cruft defined by RJBS :)
 	[AutoPrereq]			; automatically find our prereqs
 	[GenerateFile / MANIFEST.SKIP]	; make our default MANIFEST.SKIP
@@ -418,13 +420,40 @@ or the desired plugin configuration manually.
 	[Git::Push]
 	push_to = gitorious
 
-=head1 TODO
+=head1 Future Plans
 
-I would like to start digging into the C<dzil new> command and see how to automate stuff in it. Current todo list:
+=head2 Work with Task::* dists
+
+From Dist::Zilla::PluginBundle::FLORA
+
+	; Not sure if it supports config_plugin = @Bundle like PodWeaver does...
+	[TaskWeaver]	; weave our POD for a Task::* module ( enabled only if it's a Task-* dist )
+
+	has is_task => (
+	    is      => 'ro',
+	    isa     => Bool,
+	    lazy    => 1,
+	    builder => '_build_is_task',
+	);
+
+	method _build_is_task {
+	    return $self->dist =~ /^Task-/ ? 1 : 0;
+	}
+
+	...
+
+	$self->is_task
+        ? $self->add_plugins('TaskWeaver')
+        : $self->add_plugins([ 'PodWeaver' => { config_plugin => '@FLORA' } ]);
+
+=head2 I would like to start digging into the C<dzil new> command and see how to automate stuff in it.
+
+Current list:
 
 =head2 github integration
 
 automatically create github repo + set description/homepage via L<Dist::Zilla::Plugin::UpdateGitHub> and L<App::GitHub::create> or L<App::GitHub>
+
 GitHub needs a README - can we extract it and upload it on release? ( the current L<Dist::Zilla::Plugin::Readme> doesn't extract the entire POD... )
 
 =head2 gitorious integration
