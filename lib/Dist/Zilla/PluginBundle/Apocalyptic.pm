@@ -23,7 +23,7 @@ use Dist::Zilla::Plugin::MinimumPerl 0.02;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.10001919;
 use Dist::Zilla::Plugin::Bugtracker 1.100701;
 use Dist::Zilla::Plugin::Homepage 1.100700;
-use Dist::Zilla::Plugin::Repository 0.11;
+use Dist::Zilla::Plugin::Repository 0.13;
 use Dist::Zilla::Plugin::MetaNoIndex 1.101130;
 use Dist::Zilla::Plugin::License 2.101310;
 use Dist::Zilla::Plugin::DualBuilders 0.02;
@@ -34,6 +34,7 @@ use Dist::Zilla::Plugin::Manifest 2.101310;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.101330;
 use Dist::Zilla::Plugin::ArchiveRelease 0.09;
+use Dist::Zilla::Plugin::ReportVersions::Tiny 1.00;
 
 =attr pauseid
 
@@ -124,6 +125,7 @@ EOC
 	$self->add_plugins( qw(
 		CompileTests
 		ApocalypseTests
+		ReportVersions::Tiny
 	) );
 
 #	; -- munge files
@@ -321,6 +323,7 @@ This is equivalent to setting this in your dist.ini:
 	; -- Generate our tests
 	[CompileTests]			; Create a t/00-compile.t file that auto-compiles every module in the dist
 	[ApocalypseTests]		; Create a t/apocalypse.t file that runs Test::Apocalypse
+	[ReportVersions::Tiny]		; Report the versions of our prereqs
 
 	; -- munge files
 	[Prepender]			; automatically add lines following the shebang in modules
@@ -422,6 +425,17 @@ or the desired plugin configuration manually.
 
 =head1 Future Plans
 
+=head2 ArchiveRelease work with @Git
+
+I want the Git::Commit thing to commit the archived release under releases/
+
+However, how do I figure out the "dirty file" name in advance? I can't just give it a dir...
+
+=head2 SIGNATURE
+
+It works, it doesn't work... Setting it to "release" doesn't work for me. Setting it to "always"
+works but it's annoying...
+
 =head2 Work with Task::* dists
 
 From Dist::Zilla::PluginBundle::FLORA
@@ -462,7 +476,7 @@ unfortunately there's no perl API for gitorious? L<http://www.mail-archive.com/g
 
 =head2 .gitignore creation
 
-it should contain only one line - the damned dist build dir...
+it should contain only one line - the damned dist build dir "/Foo-Dist-*"
 
 =head2 Eclipse files creation
 
