@@ -34,7 +34,7 @@ use Dist::Zilla::Plugin::Manifest 2.101310;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.101330;
 use Dist::Zilla::Plugin::ArchiveRelease 0.09;
-use Dist::Zilla::Plugin::ReportVersions::Tiny 1.00;
+use Dist::Zilla::Plugin::ReportVersions::Tiny 1.01;
 
 =attr pauseid
 
