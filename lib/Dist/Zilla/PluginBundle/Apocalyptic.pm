@@ -2,22 +2,19 @@ package Dist::Zilla::PluginBundle::Apocalyptic;
 
 # ABSTRACT: Let the apocalypse build your dist!
 
-use Moose 1.01;
+use Moose 1.03; # for the "with 'Foo::Bar' => { -version => 1.23 };"
 use File::Spec 3.31;
 use File::HomeDir 0.88;
 
-# TODO wait for improved Moose that allows "with 'Foo::Bar' => { -version => 1.23 };"
-use Dist::Zilla::Role::PluginBundle::Easy 2.101310;
-with 'Dist::Zilla::Role::PluginBundle::Easy';
-
 # The plugins we use ( excluding ones bundled in dzil )
+with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '2.101310' };
+use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
 use Dist::Zilla::Plugin::BumpVersionFromGit 0.006;
 use Dist::Zilla::Plugin::CompileTests 1.100740;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
 use Dist::Zilla::Plugin::Prepender 1.100960;
 use Dist::Zilla::Plugin::Authority 0.01;
 use Dist::Zilla::Plugin::PodWeaver 3.100710;
-use Pod::Weaver::PluginBundle::Apocalyptic;	# TODO put it in a separate dist so I can specify the ver...
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
 use Dist::Zilla::Plugin::MinimumPerl 0.02;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.10001919;
@@ -68,6 +65,7 @@ sub configure {
 	[
 		'GenerateFile', 'MANIFEST.SKIP', {
 			'filename'	=> 'MANIFEST.SKIP',
+			'is_template'	=> 1,
 			'content'	=> <<'EOC',
 # Added by Dist::Zilla::PluginBundle::Apocalyptic v{{$Dist::Zilla::PluginBundle::Apocalyptic::VERSION}}
 
@@ -185,6 +183,7 @@ EOC
 	),
 	[
 		'Repository' => {
+			# TODO convert "origin" to "github"
 			'git_remote' => 'origin',
 		}
 	],
@@ -288,8 +287,7 @@ __PACKAGE__->meta->make_immutable;
 
 =pod
 
-=for Pod::Coverage
-configure
+=for Pod::Coverage configure
 
 =head1 DESCRIPTION
 
@@ -424,17 +422,6 @@ or the desired plugin configuration manually.
 	push_to = gitorious
 
 =head1 Future Plans
-
-=head2 ArchiveRelease work with @Git
-
-I want the Git::Commit thing to commit the archived release under releases/
-
-However, how do I figure out the "dirty file" name in advance? I can't just give it a dir...
-
-=head2 SIGNATURE
-
-It works, it doesn't work... Setting it to "release" doesn't work for me. Setting it to "always"
-works but it's annoying...
 
 =head2 Work with Task::* dists
 
