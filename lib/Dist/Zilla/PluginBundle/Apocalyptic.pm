@@ -7,7 +7,7 @@ use File::Spec 3.31;
 use File::HomeDir 0.88;
 
 # The plugins we use ( excluding ones bundled in dzil )
-with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '2.101310' };
+with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '2.101310' };	# basically sets the dzil version
 use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
 use Dist::Zilla::Plugin::BumpVersionFromGit 0.006;
 use Dist::Zilla::Plugin::CompileTests 1.100740;
@@ -17,17 +17,15 @@ use Dist::Zilla::Plugin::Authority 0.01;
 use Dist::Zilla::Plugin::PodWeaver 3.100710;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
 use Dist::Zilla::Plugin::MinimumPerl 0.02;
-use Dist::Zilla::Plugin::MetaProvides::Package 1.10001919;
+use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.100701;
 use Dist::Zilla::Plugin::Homepage 1.100700;
-use Dist::Zilla::Plugin::Repository 0.13;
+use Dist::Zilla::Plugin::Repository 0.16;
 use Dist::Zilla::Plugin::MetaNoIndex 1.101130;
-use Dist::Zilla::Plugin::License 2.101310;
 use Dist::Zilla::Plugin::DualBuilders 0.02;
 use Dist::Zilla::Plugin::ReadmeFromPod 0.09;
 use Dist::Zilla::Plugin::InstallGuide 1.100701;
 use Dist::Zilla::Plugin::Signature 1.100930;
-use Dist::Zilla::Plugin::Manifest 2.101310;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.101330;
 use Dist::Zilla::Plugin::ArchiveRelease 0.09;
@@ -43,6 +41,7 @@ The default is: APOCAL
 =cut
 
 has 'pauseid' => (
+	# TODO can this be retrieved from the %PAUSE stash in config.ini / dist.ini ?
 	is => 'ro',
 	isa => 'Str',
 	default => 'APOCAL',
@@ -60,7 +59,7 @@ sub configure {
 	$self->add_plugins( qw(
 		GatherDir
 		PruneCruft
-		AutoPrereq
+		AutoPrereqs
 	),
 	[
 		'GenerateFile', 'MANIFEST.SKIP', {
@@ -176,7 +175,6 @@ EOC
 	}
 	$self->add_plugins( qw(
 		MinimumPerl
-		MetaProvides::Package
 		Bugtracker
 		Homepage
 		MetaConfig
@@ -198,13 +196,19 @@ EOC
 
 #	; -- generate meta files
 	my @dirs;
-	foreach my $d ( qw( inc t xt examples share ) ) {
+	foreach my $d ( qw( inc t xt examples share eg ) ) {
 		push( @dirs, $d ) if -d $d;
 	}
 	$self->add_plugins(
 	[
 		'MetaNoIndex' => {
 			'directory' => \@dirs,
+		}
+	],
+	[
+		'MetaProvides::Package' => { # needs to be added after MetaNoIndex
+			# don't report the noindex directories
+			'meta_noindex' => 1,
 		}
 	],
 	qw(
@@ -247,6 +251,7 @@ EOC
 	);
 
 #	; -- release
+	# TODO can this also check the %PAUSE stash in config.ini / dist.ini ?
 	if ( -e File::Spec->catfile( File::HomeDir->my_home, '.pause' ) or -e File::Spec->catfile( '.', '.pause' ) ) {
 		$self->add_plugins( 'UploadToCPAN' );
 	} else {
@@ -296,11 +301,23 @@ L<Dist::Zilla> and utilizes numerous plugins to reduce the burden on the program
 
 	# In your dist.ini:
 	name			= My-Super-Cool-Dist
-	author			= A. U. Thor
-	license			= Perl_5
-	copyright_holder	= A. U. Thor
 	[@Apocalyptic]
 	pauseid = THOR
+
+Don't forget the new global config.ini file added in L<Dist::Zilla> v4!
+
+	apoc@blackhole:~$ cat .dzil/config.ini
+	[%User]
+	name  = Apocalypse
+	email = APOCAL@cpan.org
+
+	[%Rights]
+	license_class    = Perl_5
+	copyright_holder = Apocalypse
+
+	[%PAUSE]
+	username = APOCAL
+	password = YEAHRIGHTTHISISMYPASSWORD
 
 This is equivalent to setting this in your dist.ini:
 
@@ -349,7 +366,6 @@ This is equivalent to setting this in your dist.ini:
 	dir = bin
 	[ShareDir]			; automatically install File::ShareDir files from share/ ( if it exists )
 	dir = share
-	[MetaProvides::Package]		; get provides from package definitions in files
 	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=$dist
 	[Repository]			; set git repository path by looking at git configs
 	git_remote = origin
@@ -365,6 +381,8 @@ This is equivalent to setting this in your dist.ini:
 	directory = xt
 	directory = examples
 	directory = share
+	directory = eg
+	[MetaProvides::Package]		; get provides from package definitions in files
 	[License]			; create LICENSE file
 	[MakeMaker]			; create Makefile.PL file
 	[ModuleBuild]			; create Build.PL file
@@ -449,7 +467,15 @@ From Dist::Zilla::PluginBundle::FLORA
 
 =head2 I would like to start digging into the C<dzil new> command and see how to automate stuff in it.
 
-Current list:
+=head2 Changes creation
+
+create a Changes file with the boilerplate text in it
+
+	Revision history for Dist::Zilla::PluginBundle::Apocalyptic
+
+	{{$NEXT}}
+
+		initial release
 
 =head2 github integration
 
