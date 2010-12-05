@@ -2,34 +2,34 @@ package Dist::Zilla::PluginBundle::Apocalyptic;
 
 # ABSTRACT: Let the apocalypse build your dist!
 
-use Moose 1.03; # for the "with 'Foo::Bar' => { -version => 1.23 };"
-use File::Spec 3.31;
-use File::HomeDir 0.88;
+use Moose 1.21;
+use File::Spec 3.33;
+use File::HomeDir 0.93;
 
 # The plugins we use ( excluding ones bundled in dzil )
-with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '2.101310' };	# basically sets the dzil version
+with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.102345' };	# basically sets the dzil version
 use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
-use Dist::Zilla::Plugin::BumpVersionFromGit 0.006;
-use Dist::Zilla::Plugin::CompileTests 1.100740;
+use Dist::Zilla::Plugin::CompileTests 1.103030;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
-use Dist::Zilla::Plugin::Prepender 1.100960;
+use Dist::Zilla::Plugin::Prepender 1.101590;
 use Dist::Zilla::Plugin::Authority 0.01;
-use Dist::Zilla::Plugin::PodWeaver 3.100710;
+use Dist::Zilla::Plugin::PodWeaver 3.101641;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
 use Dist::Zilla::Plugin::MinimumPerl 0.02;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
-use Dist::Zilla::Plugin::Bugtracker 1.100701;
-use Dist::Zilla::Plugin::Homepage 1.100700;
+use Dist::Zilla::Plugin::Bugtracker 1.102670;
+use Dist::Zilla::Plugin::Homepage 1.101420;
 use Dist::Zilla::Plugin::Repository 0.16;
-use Dist::Zilla::Plugin::MetaNoIndex 1.101130;
-use Dist::Zilla::Plugin::DualBuilders 0.02;
-use Dist::Zilla::Plugin::ReadmeFromPod 0.09;
-use Dist::Zilla::Plugin::InstallGuide 1.100701;
+use Dist::Zilla::Plugin::MetaNoIndex 1.101550;
+use Dist::Zilla::Plugin::DualBuilders 0.03;
+use Dist::Zilla::Plugin::ReadmeFromPod 0.14;
+use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
-use Dist::Zilla::Plugin::Git 1.101330;
-use Dist::Zilla::Plugin::ArchiveRelease 0.09;
-use Dist::Zilla::Plugin::ReportVersions::Tiny 1.01;
+use Dist::Zilla::Plugin::Git 1.102810;
+use Dist::Zilla::Plugin::ArchiveRelease 3.01;	# TODO seems like it's indexing on CPAN is screwed?
+use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
+use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01016607;
 
 =attr pauseid
 
@@ -51,7 +51,7 @@ sub configure {
 	my $self = shift;
 
 #	; -- start off by bumping the version
-	$self->add_plugins( [ 'BumpVersionFromGit' => {
+	$self->add_plugins( [ 'Git::NextVersion' => {
 		'version_regexp' => '^release-(.+)$',
 	} ] );
 
@@ -119,8 +119,14 @@ EOC
 	] );
 
 #	; -- Generate our tests
-	$self->add_plugins( qw(
-		CompileTests
+	$self->add_plugins(
+	[
+		'CompileTests' => {
+			# fake the $ENV{HOME} in case smokers don't like us
+			'fake_home' => 1,
+		},
+	],
+	qw(
 		ApocalypseTests
 		ReportVersions::Tiny
 	) );
@@ -180,6 +186,12 @@ EOC
 		MetaConfig
 	),
 	[
+		'MetaData::BuiltWith' => {
+			'show_uname' => 1,
+			'uname_args' => '-s -r -m',
+		}
+	],
+	[
 		'Repository' => {
 			# TODO convert "origin" to "github"
 			'git_remote' => 'origin',
@@ -188,8 +200,6 @@ EOC
 	[
 		'MetaResources' => {
 			# TODO add the usual list of stuff found in my POD? ( cpants, bla bla )
-			# seen in DZPB::AVAR - Ratings => "http://cpanratings.perl.org/d/$dist"
-			# seen in DZPB::PDONELAN - ratings ( lc R... which should I pick? hah )
 			'license'	=> 'http://dev.perl.org/licenses/',
 		}
 	], );
@@ -229,7 +239,7 @@ EOC
 	),
 	[
 		'Signature' => {
-			'sign' => 'release',
+			'sign' => 'archive',
 		}
 	],
 		'Manifest',
@@ -248,6 +258,7 @@ EOC
 		}
 	],
 		'ConfirmRelease',
+		'TestRelease',
 	);
 
 #	; -- release
@@ -324,19 +335,20 @@ This is equivalent to setting this in your dist.ini:
 	# Skipping the usual name/author/license/copyright stuff
 
 	; -- start off by bumping the version
-	[BumpVersionFromGit]		; find the last tag, and bump to next version via Version::Next
+	[Git::NextVersion]		; find the last tag, and bump to next version via Version::Next
 	version_regexp = ^release-(.+)$
 
 	; -- start the basic dist skeleton
 	[GatherDir]			; we start with everything in the dist dir
 	[PruneCruft]			; automatically prune cruft defined by RJBS :)
-	[AutoPrereq]			; automatically find our prereqs
+	[AutoPrereqs]			; automatically find our prereqs
 	[GenerateFile / MANIFEST.SKIP]	; make our default MANIFEST.SKIP
 	[ManifestSkip]			; skip files that matches MANIFEST.SKIP
 	skipfile = MANIFEST.SKIP
 
 	; -- Generate our tests
 	[CompileTests]			; Create a t/00-compile.t file that auto-compiles every module in the dist
+	fake_home = 1			; fakes $ENV{HOME} just in case
 	[ApocalypseTests]		; Create a t/apocalypse.t file that runs Test::Apocalypse
 	[ReportVersions::Tiny]		; Report the versions of our prereqs
 
@@ -345,7 +357,7 @@ This is equivalent to setting this in your dist.ini:
 	copyright = 1
 	line = use strict; use warnings;
 	[Authority]			; put the $AUTHORITY line in modules
-	authority = cpan:PAUSEID
+	authority = cpan:APOCAL
 	do_metadata = 1
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
@@ -361,18 +373,21 @@ This is equivalent to setting this in your dist.ini:
 	file_name = CommitLog
 
 	; -- generate/process meta-information
-	[MinimumPerl]			; automatically find the minimum perl version required and add it to prereqs
 	[ExecDir]			; automatically install files from bin/ directory as executables ( if it exists )
 	dir = bin
 	[ShareDir]			; automatically install File::ShareDir files from share/ ( if it exists )
 	dir = share
+	[MinimumPerl]			; automatically find the minimum perl version required and add it to prereqs
 	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=$dist
+	[Homepage]			; set homepage to http://search.cpan.org/dist/$dist/
+	[MetaConfig]			; dump dzil config into metadata
+	[MetaData::BuiltWith]		; dump entire perl modules we used to build into metadata
 	[Repository]			; set git repository path by looking at git configs
 	git_remote = origin
-	[Homepage]			; set homepage to http://search.cpan.org/dist/$dist/
 	[MetaResources]			; add arbitrary resources to metadata
 	license = http://dev.perl.org/licenses/
-	[MetaConfig]			; dump dzil config into metadata
+
+
 
 	; -- generate meta files
 	[MetaNoIndex]			; tell PAUSE to not index those stuff ( if it exists )
@@ -383,6 +398,7 @@ This is equivalent to setting this in your dist.ini:
 	directory = share
 	directory = eg
 	[MetaProvides::Package]		; get provides from package definitions in files
+	meta_noindex = 1
 	[License]			; create LICENSE file
 	[MakeMaker]			; create Makefile.PL file
 	[ModuleBuild]			; create Build.PL file
@@ -393,7 +409,7 @@ This is equivalent to setting this in your dist.ini:
 	[ReadmeFromPod]			; create README file
 	[InstallGuide]			; create INSTALL file
 	[Signature]			; create SIGNATURE file when we are releasing ( annoying to enter password during test builds... )
-	sign = release
+	sign = archive
 	[Manifest]			; finally, create the MANIFEST file
 
 	; -- pre-release
@@ -402,6 +418,7 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
 	[ConfirmRelease]		; double-check that we ACTUALLY want a release, ha!
+	[TestRelease]			; make sure that we won't release a FAIL distro :)
 
 	; -- release
 	[UploadToCPAN]			; upload your dist to CPAN using CPAN::Uploader ( if .pause file exists in HOME dir or dist dir )
@@ -498,6 +515,14 @@ create the .project/.includepath/.settings stuff
 =head2 submit project to ohloh
 
 we need more perl projects on ohloh! there's L<WWW::Ohloh::API>
+
+=head2 locale files
+
+L<Dist::Zilla::Plugin::LocaleMsgfmt> looks interesting, I should auto-enable it if I find the .po files?
+
+=head2 DZP::PkgDist
+
+Do we need the $DIST variable? What software uses it? I already provide that info in the POD of the file...
 
 =head1 SEE ALSO
 
