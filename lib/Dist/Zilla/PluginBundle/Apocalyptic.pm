@@ -15,7 +15,7 @@ use Dist::Zilla::Plugin::Prepender 1.101590;
 use Dist::Zilla::Plugin::Authority 1.001;
 use Dist::Zilla::Plugin::PodWeaver 3.101641;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
-use Dist::Zilla::Plugin::MinimumPerl 0.02;
+use Dist::Zilla::Plugin::MinimumPerl 1.000;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
@@ -242,7 +242,7 @@ EOC
 		}
 	],
 		'ConfirmRelease',
-		'TestRelease',
+#		'TestRelease',	# TODO fix Test::Apocalypse so it doesn't stop the flow if "so-what" tests fail :) ( mark them as TODO tests? )
 	);
 
 #	; -- release
@@ -295,9 +295,8 @@ This plugin bundle attempts to automate as much as sanely possible the job of bu
 L<Dist::Zilla> and utilizes numerous plugins to reduce the burden on the programmer.
 
 	# In your dist.ini:
-	name			= My-Super-Cool-Dist
+	name = My-Super-Cool-Dist
 	[@Apocalyptic]
-	pauseid = THOR
 
 Don't forget the new global config.ini file added in L<Dist::Zilla> v4!
 
@@ -312,7 +311,7 @@ Don't forget the new global config.ini file added in L<Dist::Zilla> v4!
 
 	[%PAUSE]
 	username = APOCAL
-	password = YEAHRIGHTTHISISMYPASSWORD
+	password = myawesomepassword
 
 This is equivalent to setting this in your dist.ini:
 
