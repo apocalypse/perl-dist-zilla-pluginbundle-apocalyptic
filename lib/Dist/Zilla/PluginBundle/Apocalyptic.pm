@@ -126,12 +126,10 @@ EOC
 			'line'		=> 'use strict; use warnings;',
 		}
 	],
-	[
-		'Authority' => {
-			'do_metadata'	=> 1,
-		}
-	],
-		'PkgVersion',
+	qw(
+		Authority
+		PkgVersion
+	),
 	[
 		'PodWeaver' => {
 			'config_plugin' => '@Apocalyptic',
