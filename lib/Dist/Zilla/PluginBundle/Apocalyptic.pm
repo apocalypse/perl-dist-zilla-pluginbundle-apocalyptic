@@ -12,7 +12,7 @@ use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
 use Dist::Zilla::Plugin::CompileTests 1.103030;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
 use Dist::Zilla::Plugin::Prepender 1.101590;
-use Dist::Zilla::Plugin::Authority 0.01;
+use Dist::Zilla::Plugin::Authority 1.001;
 use Dist::Zilla::Plugin::PodWeaver 3.101641;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
 use Dist::Zilla::Plugin::MinimumPerl 0.02;
@@ -31,21 +31,8 @@ use Dist::Zilla::Plugin::ArchiveRelease 3.01;	# TODO seems like it's indexing on
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01016607;
 
-=attr pauseid
-
-The PAUSE id you want to use when building the dist. As of now it's only used for the L<Dist::Zilla::Plugin::Authority> plugin but
-in the future there might be other uses for it.
-
-The default is: APOCAL
-
-=cut
-
-has 'pauseid' => (
-	# TODO can this be retrieved from the %PAUSE stash in config.ini / dist.ini ?
-	is => 'ro',
-	isa => 'Str',
-	default => 'APOCAL',
-);
+# TODO modules I depend on that have patches pending
+# Perl::PrereqScanner - updated Moose support
 
 sub configure {
 	my $self = shift;
@@ -141,7 +128,6 @@ EOC
 	],
 	[
 		'Authority' => {
-			'authority'	=> 'cpan:' . $self->pauseid,
 			'do_metadata'	=> 1,
 		}
 	],
