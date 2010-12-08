@@ -15,7 +15,7 @@ use Dist::Zilla::Plugin::Prepender 1.101590;
 use Dist::Zilla::Plugin::Authority 1.001;
 use Dist::Zilla::Plugin::PodWeaver 3.101641;
 use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
-use Dist::Zilla::Plugin::MinimumPerl 1.000;
+use Dist::Zilla::Plugin::MinimumPerl 1.001;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
@@ -29,10 +29,10 @@ use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.102810;
 use Dist::Zilla::Plugin::ArchiveRelease 3.01;	# TODO seems like it's indexing on CPAN is screwed?
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
-use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01016607;
+use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 
-# TODO modules I depend on that have patches pending
-# Perl::PrereqScanner - updated Moose support
+# TODO what about sub-deps that we need? Just list them here?
+# Pod::Weaver::Section::Legal - add extra line about LICENSE ( pending pull req in github )
 
 sub configure {
 	my $self = shift;
@@ -43,7 +43,8 @@ sub configure {
 	} ] );
 
 #	; -- start the basic dist skeleton
-	$self->add_plugins( qw(
+	$self->add_plugins(
+	qw(
 		GatherDir
 		PruneCruft
 		AutoPrereqs
@@ -163,7 +164,8 @@ EOC
 			'dir'	=> 'bin',
 		} ] );
 	}
-	$self->add_plugins( qw(
+	$self->add_plugins(
+	qw(
 		MinimumPerl
 		Bugtracker
 		Homepage
@@ -256,6 +258,7 @@ EOC
 
 #	; -- post-release
 	$self->add_plugins(
+	# TODO now that I have a twitter account, should I tweet it? :)
 	[
 		'ArchiveRelease' => {
 			'directory' => 'releases',
