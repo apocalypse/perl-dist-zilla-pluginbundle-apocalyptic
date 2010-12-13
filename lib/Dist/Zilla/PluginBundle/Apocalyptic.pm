@@ -26,7 +26,7 @@ use Dist::Zilla::Plugin::ReadmeFromPod 0.14;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
-use Dist::Zilla::Plugin::Git 1.102810;
+use Dist::Zilla::Plugin::Git 1.103470;
 use Dist::Zilla::Plugin::ArchiveRelease 3.01;	# TODO seems like it's indexing on CPAN is screwed?
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
@@ -268,6 +268,8 @@ EOC
 		'Git::Commit' => {
 			'changelog'	=> 'Changes',
 			'commit_msg'	=> 'New CPAN release of %N - v%v%n%n%c',
+			'time_zone'	=> 'UTC',
+			'add_files_in'	=> 'releases',
 		}
 	],
 	[
