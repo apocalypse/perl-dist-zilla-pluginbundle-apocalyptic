@@ -3,8 +3,6 @@ package Dist::Zilla::PluginBundle::Apocalyptic;
 # ABSTRACT: Let the apocalypse build your dist!
 
 use Moose 1.21;
-use File::Spec 3.33;
-use File::HomeDir 0.93;
 
 # The plugins we use ( excluding ones bundled in dzil )
 with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.102345' };	# basically sets the dzil version
@@ -21,7 +19,7 @@ use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
 use Dist::Zilla::Plugin::Repository 0.16;
 use Dist::Zilla::Plugin::MetaNoIndex 1.101550;
-use Dist::Zilla::Plugin::DualBuilders 0.03;
+use Dist::Zilla::Plugin::DualBuilders 1.001;
 use Dist::Zilla::Plugin::ReadmeFromPod 0.14;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
@@ -225,7 +223,7 @@ EOC
 	),
 	[
 		'Signature' => {
-			'sign' => 'archive',
+			'sign' => 'always',
 		}
 	],
 		'Manifest',
@@ -248,13 +246,7 @@ EOC
 	);
 
 #	; -- release
-	# TODO can this also check the %PAUSE stash in config.ini / dist.ini ?
-	if ( -e File::Spec->catfile( File::HomeDir->my_home, '.pause' ) or -e File::Spec->catfile( '.', '.pause' ) ) {
-		$self->add_plugins( 'UploadToCPAN' );
-	} else {
-		warn 'No .pause file detected, using FakeRelease!';
-		$self->add_plugins( 'FakeRelease' );
-	}
+	$self->add_plugins( 'UploadToCPAN' );
 
 #	; -- post-release
 	$self->add_plugins(
@@ -409,8 +401,7 @@ This is equivalent to setting this in your dist.ini:
 	[TestRelease]			; make sure that we won't release a FAIL distro :)
 
 	; -- release
-	[UploadToCPAN]			; upload your dist to CPAN using CPAN::Uploader ( if .pause file exists in HOME dir or dist dir )
-					; if not, we will use [FakeRelease] so you can still release :)
+	[UploadToCPAN]			; upload your dist to CPAN using CPAN::Uploader
 
 	; -- post-release
 	[ArchiveRelease]		; archive our tarballs under releases/
