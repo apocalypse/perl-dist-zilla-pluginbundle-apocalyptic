@@ -67,6 +67,9 @@ sub configure {
 \B\.git\b
 ^\.gitignore$
 
+# Ignore Dist::Zilla's build dir
+^\.build/
+
 # Avoid configuration metadata file
 ^MYMETA\.
 
