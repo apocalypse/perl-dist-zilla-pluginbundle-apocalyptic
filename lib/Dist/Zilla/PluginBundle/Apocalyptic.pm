@@ -253,7 +253,6 @@ EOC
 
 #	; -- post-release
 	$self->add_plugins(
-	# TODO now that I have a twitter account, should I tweet it? :)
 	[
 		'ArchiveRelease' => {
 			'directory' => 'releases',
@@ -370,8 +369,6 @@ This is equivalent to setting this in your dist.ini:
 	[MetaResources]			; add arbitrary resources to metadata
 	license = http://dev.perl.org/licenses/
 
-
-
 	; -- generate meta files
 	[MetaNoIndex]			; tell PAUSE to not index those stuff ( if it exists )
 	directory = inc
@@ -412,6 +409,8 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Commit]			; commit the dzil-generated stuff
 	changelog = Changes
 	commit_msg = New CPAN release of %N - v%v%n%n%c
+	time_zone = UTC
+	add_files_in = releases		; add our release tarballs to the repo
 	[Git::Tag]			; tag our new release
 	tag_format = release-%v
 	tag_message = Tagged release-%v
@@ -439,6 +438,18 @@ or the desired plugin configuration manually.
 	push_to = gitorious
 
 =head1 Future Plans
+
+=head2 use XDG's Twitter plugin
+
+I want to tweet and be a web2.0 dude! :)
+
+=head2 use GETTY's cool Dist::Zilla::Plugin::Run::AfterRelease
+
+I want to use that to automatically install the generated tarball
+
+	sudo cpanp i --force file:///home/apoc/mygit/perl-dist-zilla-pluginbundle-apocalyptic/Dist-Zilla-PluginBundle-Apocalyptic-0.001.tar.gz
+
+However, how do I get the full tarball path?
 
 =head2 Work with Task::* dists
 
@@ -489,6 +500,7 @@ unfortunately there's no perl API for gitorious? L<http://www.mail-archive.com/g
 =head2 .gitignore creation
 
 it should contain only one line - the damned dist build dir "/Foo-Dist-*"
+also, it needs the "/.build/" line?
 
 =head2 Eclipse files creation
 
