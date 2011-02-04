@@ -125,7 +125,7 @@ EOC
 	[
 		'Prepender' => {
 			'copyright'	=> 1,
-			'line'		=> 'use strict; use warnings;',
+			'line'		=> 'use strict; use warnings FATAL => \'all\';',
 		}
 	],
 	qw(
@@ -337,7 +337,7 @@ This is equivalent to setting this in your dist.ini:
 	; -- munge files
 	[Prepender]			; automatically add lines following the shebang in modules
 	copyright = 1
-	line = use strict; use warnings;
+	line = use strict; use warnings FATAL => 'all';
 	[Authority]			; put the $AUTHORITY line in modules
 	authority = cpan:APOCAL
 	do_metadata = 1
