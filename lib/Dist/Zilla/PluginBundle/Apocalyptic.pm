@@ -115,8 +115,11 @@ EOC
 			'fake_home' => 1,
 		},
 	],
+
+# TODO convert ApocalypseTests to Alias' system and ditch Test::Apocalypse in favor of
+# multiple test files
+# 		ApocalypseTests
 	qw(
-		ApocalypseTests
 		ReportVersions::Tiny
 	) );
 
@@ -125,7 +128,7 @@ EOC
 	[
 		'Prepender' => {
 			'copyright'	=> 1,
-			'line'		=> 'use strict; use warnings FATAL => \'all\';',
+			'line'		=> 'use strict; use warnings;',
 		}
 	],
 	qw(
@@ -337,7 +340,7 @@ This is equivalent to setting this in your dist.ini:
 	; -- munge files
 	[Prepender]			; automatically add lines following the shebang in modules
 	copyright = 1
-	line = use strict; use warnings FATAL => 'all';
+	line = use strict; use warnings;
 	[Authority]			; put the $AUTHORITY line in modules
 	authority = cpan:APOCAL
 	do_metadata = 1
