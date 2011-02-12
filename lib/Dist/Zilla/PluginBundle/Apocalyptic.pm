@@ -196,7 +196,7 @@ EOC
 
 #	; -- generate meta files
 	my @dirs;
-	foreach my $d ( qw( inc t xt examples share eg ) ) {
+	foreach my $d ( qw( inc t xt examples share eg mylib ) ) {
 		push( @dirs, $d ) if -d $d;
 	}
 	$self->add_plugins(
