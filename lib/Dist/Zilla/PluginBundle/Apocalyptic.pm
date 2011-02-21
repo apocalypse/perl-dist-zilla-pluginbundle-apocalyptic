@@ -25,12 +25,12 @@ use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.110500;
-use Dist::Zilla::Plugin::ArchiveRelease 3.01;	# TODO seems like it's indexing on CPAN is screwed?
+use Dist::Zilla::Plugin::ArchiveRelease 3.01;
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 
-# TODO what about sub-deps that we need? Just list them here?
-# Pod::Weaver::Section::Legal - add extra line about LICENSE ( https://github.com/rjbs/pod-weaver/pull/3 )
+# TODO follow up on those local patches:
+# Plugin::ChangelogFromGit - better HEAD tag name ( https://github.com/rcaputo/dzp-changelogfromgit/pull/1 )
 
 sub configure {
 	my $self = shift;
@@ -341,9 +341,8 @@ This is equivalent to setting this in your dist.ini:
 	[Prepender]			; automatically add lines following the shebang in modules
 	copyright = 1
 	line = use strict; use warnings;
-	[Authority]			; put the $AUTHORITY line in modules
+	[Authority]			; put the $AUTHORITY line in modules and the metadata
 	authority = cpan:APOCAL
-	do_metadata = 1
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
 	config_plugin = @Apocalyptic
@@ -480,7 +479,7 @@ From Dist::Zilla::PluginBundle::FLORA
 
 =head2 I would like to start digging into the C<dzil new> command and see how to automate stuff in it.
 
-=head2 Changes creation
+=head3 Changes creation
 
 create a Changes file with the boilerplate text in it
 
@@ -490,26 +489,26 @@ create a Changes file with the boilerplate text in it
 
 		initial release
 
-=head2 github integration
+=head3 github integration
 
 automatically create github repo + set description/homepage via L<Dist::Zilla::Plugin::UpdateGitHub> and L<App::GitHub::create> or L<App::GitHub>
 
 GitHub needs a README - can we extract it and upload it on release? ( the current L<Dist::Zilla::Plugin::Readme> doesn't extract the entire POD... )
 
-=head2 gitorious integration
+=head3 gitorious integration
 
 unfortunately there's no perl API for gitorious? L<http://www.mail-archive.com/gitorious@googlegroups.com/msg01016.html>
 
-=head2 .gitignore creation
+=head3 .gitignore creation
 
 it should contain only one line - the damned dist build dir "/Foo-Dist-*"
 also, it needs the "/.build/" line?
 
-=head2 Eclipse files creation
+=head3 Eclipse files creation
 
 create the .project/.includepath/.settings stuff
 
-=head2 submit project to ohloh
+=head3 submit project to ohloh
 
 we need more perl projects on ohloh! there's L<WWW::Ohloh::API>
 
