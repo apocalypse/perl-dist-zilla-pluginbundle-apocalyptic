@@ -24,13 +24,13 @@ use Dist::Zilla::Plugin::ReadmeFromPod 0.14;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
-use Dist::Zilla::Plugin::Git 1.103470;
+use Dist::Zilla::Plugin::Git 1.110500;
 use Dist::Zilla::Plugin::ArchiveRelease 3.01;	# TODO seems like it's indexing on CPAN is screwed?
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 
 # TODO what about sub-deps that we need? Just list them here?
-# Pod::Weaver::Section::Legal - add extra line about LICENSE ( pending pull req in github )
+# Pod::Weaver::Section::Legal - add extra line about LICENSE ( https://github.com/rjbs/pod-weaver/pull/3 )
 
 sub configure {
 	my $self = shift;
