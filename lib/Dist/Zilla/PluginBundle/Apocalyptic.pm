@@ -5,7 +5,7 @@ package Dist::Zilla::PluginBundle::Apocalyptic;
 use Moose 1.21;
 
 # The plugins we use ( excluding ones bundled in dzil )
-with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.102345' };	# basically sets the dzil version
+with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.200004' };	# basically sets the dzil version
 use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
 use Dist::Zilla::Plugin::CompileTests 1.103030;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
@@ -18,7 +18,6 @@ use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
 use Dist::Zilla::Plugin::Repository 0.16;
-use Dist::Zilla::Plugin::MetaNoIndex 1.101550;
 use Dist::Zilla::Plugin::DualBuilders 1.001;
 use Dist::Zilla::Plugin::ReadmeFromPod 0.14;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
@@ -115,11 +114,8 @@ EOC
 			'fake_home' => 1,
 		},
 	],
-
-# TODO convert ApocalypseTests to Alias' system and ditch Test::Apocalypse in favor of
-# multiple test files
-# 		ApocalypseTests
 	qw(
+		ApocalypseTests
 		ReportVersions::Tiny
 	) );
 
@@ -184,6 +180,7 @@ EOC
 	[
 		'Repository' => {
 			# TODO convert "origin" to "github"
+			# TODO actually use gitorious!
 			'git_remote' => 'origin',
 		}
 	],
@@ -247,8 +244,8 @@ EOC
 			'changelog'	=> 'Changes',
 		}
 	],
+		'TestRelease',
 		'ConfirmRelease',
-#		'TestRelease',	# TODO fix Test::Apocalypse so it doesn't stop the flow if "so-what" tests fail :) ( mark them as TODO tests? )
 	);
 
 #	; -- release
@@ -399,8 +396,8 @@ This is equivalent to setting this in your dist.ini:
 	changelog = Changes
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
+	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[ConfirmRelease]		; double-check that we ACTUALLY want a release, ha!
-	[TestRelease]			; make sure that we won't release a FAIL distro :)
 
 	; -- release
 	[UploadToCPAN]			; upload your dist to CPAN using CPAN::Uploader
