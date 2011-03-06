@@ -518,7 +518,6 @@ L<Dist::Zilla::Plugin::LocaleMsgfmt> looks interesting, I should auto-enable it 
 Do we need the $DIST variable? What software uses it? I already provide that info in the POD of the file...
 
 =head1 SEE ALSO
-
-L<Dist::Zilla>
+Dist::Zilla
 
 =cut
