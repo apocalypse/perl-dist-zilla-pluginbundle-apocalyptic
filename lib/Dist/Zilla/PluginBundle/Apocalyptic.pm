@@ -6,7 +6,7 @@ use Moose 1.21;
 
 # The plugins we use ( excluding ones bundled in dzil )
 with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.200004' };	# basically sets the dzil version
-use Pod::Weaver::PluginBundle::Apocalyptic 0.001;
+use Pod::Weaver::PluginBundle::Apocalyptic 0.002;
 use Dist::Zilla::Plugin::CompileTests 1.103030;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
 use Dist::Zilla::Plugin::Prepender 1.101590;
@@ -244,9 +244,10 @@ EOC
 			'changelog'	=> 'Changes',
 		}
 	],
-		'TestRelease',
-		'ConfirmRelease',
-	);
+	qw(
+		TestRelease
+		ConfirmRelease
+	) );
 
 #	; -- release
 	$self->add_plugins( 'UploadToCPAN' );
