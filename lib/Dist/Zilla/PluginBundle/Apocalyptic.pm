@@ -28,6 +28,8 @@ use Dist::Zilla::Plugin::ArchiveRelease 3.01;
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 
+# TODO fix this: http://changes.cpanhq.org/author/APOCAL
+
 # TODO follow up on those local patches:
 # Plugin::ChangelogFromGit - better HEAD tag name ( https://github.com/rcaputo/dzp-changelogfromgit/pull/1 )
 
