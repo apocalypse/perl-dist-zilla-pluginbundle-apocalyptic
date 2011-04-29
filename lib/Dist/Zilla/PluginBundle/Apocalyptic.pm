@@ -27,6 +27,7 @@ use Dist::Zilla::Plugin::Git 1.110500;
 use Dist::Zilla::Plugin::ArchiveRelease 3.01;
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
+use Dist::Zilla::Plugin::Clean 0.002;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -37,12 +38,14 @@ sub configure {
 	my $self = shift;
 
 #	; -- start off by bumping the version
-	$self->add_plugins( [ 'Git::NextVersion' => {
-		'version_regexp' => '^release-(.+)$',
-	} ] );
+	$self->add_plugins(
+	[
+		'Git::NextVersion' => {
+			'version_regexp' => '^release-(.+)$',
+		}
+	],
 
 #	; -- start the basic dist skeleton
-	$self->add_plugins(
 	qw(
 		GatherDir
 		PruneCruft
@@ -106,23 +109,21 @@ EOC
 		'ManifestSkip' => {
 			'skipfile' => 'MANIFEST.SKIP',
 		}
-	] );
+	],
 
 #	; -- Generate our tests
-	$self->add_plugins(
 	[
 		'CompileTests' => {
 			# fake the $ENV{HOME} in case smokers don't like us
 			'fake_home' => 1,
-		},
+		}
 	],
 	qw(
 		ApocalypseTests
 		ReportVersions::Tiny
-	) );
+	),
 
 #	; -- munge files
-	$self->add_plugins(
 	[
 		'Prepender' => {
 			'copyright'	=> 1,
@@ -137,10 +138,9 @@ EOC
 		'PodWeaver' => {
 			'config_plugin' => '@Apocalyptic',
 		}
-	], );
+	],
 
 #	; -- update the Changelog
-	$self->add_plugins(
 	[
 		'NextRelease' => {
 			'time_zone'	=> 'UTC',
@@ -153,7 +153,8 @@ EOC
 			'tag_regexp'	=> '^release-(.+)$',
 			'file_name'	=> 'CommitLog',
 		}
-	], );
+	],
+	);
 
 #	; -- generate/process meta-information
 	if ( -d 'bin' ) {
@@ -191,7 +192,8 @@ EOC
 			# TODO add the usual list of stuff found in my POD? ( cpants, bla bla )
 			'license'	=> 'http://dev.perl.org/licenses/',
 		}
-	], );
+	],
+	);
 
 #	; -- generate meta files
 	my @dirs;
@@ -231,11 +233,11 @@ EOC
 			'sign' => 'always',
 		}
 	],
-		'Manifest',
-	);
+	qw(
+		Manifest
+	),
 
 #	; -- pre-release
-	$self->add_plugins(
 	[
 		'CheckChangesHasContent' => {
 			'changelog'	=> 'Changes',
@@ -249,13 +251,14 @@ EOC
 	qw(
 		TestRelease
 		ConfirmRelease
-	) );
+	),
 
 #	; -- release
-	$self->add_plugins( 'UploadToCPAN' );
+	qw(
+		UploadToCPAN
+	),
 
 #	; -- post-release
-	$self->add_plugins(
 	[
 		'ArchiveRelease' => {
 			'directory' => 'releases',
@@ -280,7 +283,11 @@ EOC
 			# TODO add "github", "gitorious" support somehow... introspect the Git config?
 			'push_to'	=> 'origin',
 		}
-	], );
+	],
+	qw(
+		Clean
+	),
+	);
 }
 
 no Moose;
@@ -418,6 +425,7 @@ This is equivalent to setting this in your dist.ini:
 	tag_message = Tagged release-%v
 	[Git::Push]			; automatically push to the "origin" defined in .git/config
 	push_to = origin
+	[Clean]				; run dzil clean so we have no cruft :)
 
 However, this plugin bundle does A LOT of things, so you would need to read the config carefully to see if it does
 anything you don't want to do. You can override the options simply by removing the offending plugin from the bundle
