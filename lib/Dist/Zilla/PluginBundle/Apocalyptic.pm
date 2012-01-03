@@ -349,7 +349,6 @@ This is equivalent to setting this in your dist.ini:
 	copyright = 1
 	line = use strict; use warnings;
 	[Authority]			; put the $AUTHORITY line in modules and the metadata
-	authority = cpan:APOCAL
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
 	config_plugin = @Apocalyptic
@@ -379,13 +378,8 @@ This is equivalent to setting this in your dist.ini:
 	license = http://dev.perl.org/licenses/
 
 	; -- generate meta files
-	[MetaNoIndex]			; tell PAUSE to not index those stuff ( if it exists )
-	directory = inc
-	directory = t
-	directory = xt
-	directory = examples
-	directory = share
-	directory = eg
+	[MetaNoIndex]			; tell PAUSE to not index those directories
+	directory = inc t xt examples share eg mylib
 	[MetaProvides::Package]		; get provides from package definitions in files
 	meta_noindex = 1
 	[License]			; create LICENSE file
