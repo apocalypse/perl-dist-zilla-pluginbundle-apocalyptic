@@ -322,6 +322,8 @@ Don't forget the new global config.ini file added in L<Dist::Zilla> v4!
 	username = APOCAL
 	password = myawesomepassword
 
+=head2 dist.ini
+
 This is equivalent to setting this in your dist.ini:
 
 	# Skipping the usual name/author/license/copyright stuff
@@ -440,6 +442,114 @@ or the desired plugin configuration manually.
 	remove = Git::Push
 	[Git::Push]
 	push_to = gitorious
+
+=head2 dumpphases
+
+	apoc@apoc-x300:~/mygit/perl-dist-zilla-pluginbundle-apocalyptic$ dzil dumpphases
+	Phase: Version
+	 - description: Provide a version for the distribution
+	 - role: -VersionProvider
+	 * @Apocalyptic/Git::NextVersion => Dist::Zilla::Plugin::Git::NextVersion
+
+	Phase: MetaData
+	 - description: Specify MetaData for the distribution
+	 - role: -MetaProvider
+	 * @Apocalyptic/Authority => Dist::Zilla::Plugin::Authority
+	 * @Apocalyptic/Bugtracker => Dist::Zilla::Plugin::Bugtracker
+	 * @Apocalyptic/Homepage => Dist::Zilla::Plugin::Homepage
+	 * @Apocalyptic/MetaConfig => Dist::Zilla::Plugin::MetaConfig
+	 * @Apocalyptic/MetaData::BuiltWith => Dist::Zilla::Plugin::MetaData::BuiltWith
+	 * @Apocalyptic/Repository => Dist::Zilla::Plugin::Repository
+	 * @Apocalyptic/MetaResources => Dist::Zilla::Plugin::MetaResources
+	 * @Apocalyptic/MetaNoIndex => Dist::Zilla::Plugin::MetaNoIndex
+	 * @Apocalyptic/MetaProvides::Package => Dist::Zilla::Plugin::MetaProvides::Package
+
+	Phase: Gather Files
+	 - role: -FileGatherer
+	 * @Apocalyptic/GatherDir => Dist::Zilla::Plugin::GatherDir
+	 * @Apocalyptic/MANIFEST.SKIP => Dist::Zilla::Plugin::GenerateFile
+	 * @Apocalyptic/Test::Compile => Dist::Zilla::Plugin::Test::Compile
+	 * @Apocalyptic/ApocalypseTests => Dist::Zilla::Plugin::ApocalypseTests
+	 * @Apocalyptic/ReportVersions::Tiny => Dist::Zilla::Plugin::ReportVersions::Tiny
+	 * @Apocalyptic/ChangelogFromGit => Dist::Zilla::Plugin::ChangelogFromGit
+	 * @Apocalyptic/License => Dist::Zilla::Plugin::License
+	 * @Apocalyptic/MetaYAML => Dist::Zilla::Plugin::MetaYAML
+	 * @Apocalyptic/MetaJSON => Dist::Zilla::Plugin::MetaJSON
+	 * @Apocalyptic/Signature => Dist::Zilla::Plugin::Signature
+	 * @Apocalyptic/Manifest => Dist::Zilla::Plugin::Manifest
+
+	Phase: Prune Files
+	 - role: -FilePruner
+	 * @Apocalyptic/PruneCruft => Dist::Zilla::Plugin::PruneCruft
+	 * @Apocalyptic/ManifestSkip => Dist::Zilla::Plugin::ManifestSkip
+	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
+
+	Phase: Munge Files
+	 - role: -FileMunger
+	 * @Apocalyptic/ApocalypseTests => Dist::Zilla::Plugin::ApocalypseTests
+	 * @Apocalyptic/Prepender => Dist::Zilla::Plugin::Prepender
+	 * @Apocalyptic/Authority => Dist::Zilla::Plugin::Authority
+	 * @Apocalyptic/PkgVersion => Dist::Zilla::Plugin::PkgVersion
+	 * @Apocalyptic/PodWeaver => Dist::Zilla::Plugin::PodWeaver
+	 * @Apocalyptic/NextRelease => Dist::Zilla::Plugin::NextRelease
+
+	Phase: Register Preqreqs
+	 - role: -PrereqSource
+	 * @Apocalyptic/AutoPrereqs => Dist::Zilla::Plugin::AutoPrereqs
+	 * @Apocalyptic/MinimumPerl => Dist::Zilla::Plugin::MinimumPerl
+	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
+	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
+	 * @Apocalyptic/DualBuilders => Dist::Zilla::Plugin::DualBuilders
+
+	Phase: Install Tool
+	 - role: -InstallTool
+	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
+	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
+	 * @Apocalyptic/DualBuilders => Dist::Zilla::Plugin::DualBuilders
+	 * @Apocalyptic/ReadmeFromPod => Dist::Zilla::Plugin::ReadmeFromPod
+	 * @Apocalyptic/InstallGuide => Dist::Zilla::Plugin::InstallGuide
+
+	Phase: After Build
+	 - role: -AfterBuild
+	 * @Apocalyptic/DualBuilders => Dist::Zilla::Plugin::DualBuilders
+	 * @Apocalyptic/Signature => Dist::Zilla::Plugin::Signature
+
+	Phase: Before Archive
+	 - role: -BeforeArchive
+	 * @Apocalyptic/Signature => Dist::Zilla::Plugin::Signature
+
+	Phase: Releaser
+	 - role: -Releaser
+	 * @Apocalyptic/UploadToCPAN => Dist::Zilla::Plugin::UploadToCPAN
+	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
+
+	Phase: Before Release
+	 - role: -BeforeRelease
+	 * @Apocalyptic/CheckChangesHasContent => Dist::Zilla::Plugin::CheckChangesHasContent
+	 * @Apocalyptic/Git::Check => Dist::Zilla::Plugin::Git::Check
+	 * @Apocalyptic/TestRelease => Dist::Zilla::Plugin::TestRelease
+	 * @Apocalyptic/ConfirmRelease => Dist::Zilla::Plugin::ConfirmRelease
+	 * @Apocalyptic/UploadToCPAN => Dist::Zilla::Plugin::UploadToCPAN
+	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
+	 * @Apocalyptic/Git::Tag => Dist::Zilla::Plugin::Git::Tag
+
+	Phase: After Release
+	 - role: -AfterRelease
+	 * @Apocalyptic/NextRelease => Dist::Zilla::Plugin::NextRelease
+	 * @Apocalyptic/Git::Commit => Dist::Zilla::Plugin::Git::Commit
+	 * @Apocalyptic/Git::Tag => Dist::Zilla::Plugin::Git::Tag
+	 * @Apocalyptic/Git::Push => Dist::Zilla::Plugin::Git::Push
+	 * @Apocalyptic/Clean => Dist::Zilla::Plugin::Clean
+
+	Phase: Test Runner
+	 - role: -TestRunner
+	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
+	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
+
+	Phase: Build Runner
+	 - role: -BuildRunner
+	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
+	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
 
 =head1 Future Plans
 
