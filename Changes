@@ -3,6 +3,7 @@ Revision history for Perl module Dist::Zilla::PluginBundle::Apocalyptic
 {{$NEXT}}
 
 	Use Dist::Zilla::Plugin::LocaleMsgfmt
+	Use Dist::Zilla::Plugin::CheckPrereqsIndexed
 
 0.002
 	Released: 2012-01-03 01:34:43 UTC

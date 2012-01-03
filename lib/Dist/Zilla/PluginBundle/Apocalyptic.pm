@@ -29,6 +29,7 @@ use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 use Dist::Zilla::Plugin::Clean 0.002;
 use Dist::Zilla::Plugin::LocaleMsgfmt 1.203;
+use Dist::Zilla::Plugin::CheckPrereqsIndexed 0.007;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -256,6 +257,7 @@ EOC
 	],
 	qw(
 		TestRelease
+		CheckPrereqsIndexed
 		ConfirmRelease
 	),
 
@@ -411,6 +413,7 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
+	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
 	[ConfirmRelease]		; double-check that we ACTUALLY want a release, ha!
 
 	; -- release
@@ -452,6 +455,8 @@ or the desired plugin configuration manually.
 	push_to = gitorious
 
 =head2 dumpphases
+
+Here is an output of a distribution using Dist::Zilla and only this bundle:
 
 	apoc@apoc-x300:~/mygit/perl-dist-zilla-pluginbundle-apocalyptic$ dzil dumpphases
 
@@ -541,6 +546,7 @@ or the desired plugin configuration manually.
 	 * @Apocalyptic/CheckChangesHasContent => Dist::Zilla::Plugin::CheckChangesHasContent
 	 * @Apocalyptic/Git::Check => Dist::Zilla::Plugin::Git::Check
 	 * @Apocalyptic/TestRelease => Dist::Zilla::Plugin::TestRelease
+	 * @Apocalyptic/CheckPrereqsIndexed => Dist::Zilla::Plugin::CheckPrereqsIndexed
 	 * @Apocalyptic/ConfirmRelease => Dist::Zilla::Plugin::ConfirmRelease
 	 * @Apocalyptic/UploadToCPAN => Dist::Zilla::Plugin::UploadToCPAN
 	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
