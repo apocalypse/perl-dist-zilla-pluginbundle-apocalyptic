@@ -28,6 +28,7 @@ use Dist::Zilla::Plugin::ArchiveRelease 3.01;
 use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 use Dist::Zilla::Plugin::Clean 0.002;
+use Dist::Zilla::Plugin::LocaleMsgfmt 1.203;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -138,6 +139,11 @@ EOC
 		'PodWeaver' => {
 			'config_plugin' => '@Apocalyptic',
 		}
+	],
+	[
+		'LocaleMsgfmt' => {
+			'locale' => 'share/locale',
+		},
 	],
 
 #	; -- update the Changelog
@@ -354,6 +360,8 @@ This is equivalent to setting this in your dist.ini:
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
 	config_plugin = @Apocalyptic
+	[LocaleMsgfmt]			; compile .po files to .mo files in share/locale
+	locale = share/locale
 
 	; -- update the Changelog
 	[NextRelease]
@@ -446,6 +454,7 @@ or the desired plugin configuration manually.
 =head2 dumpphases
 
 	apoc@apoc-x300:~/mygit/perl-dist-zilla-pluginbundle-apocalyptic$ dzil dumpphases
+
 	Phase: Version
 	 - description: Provide a version for the distribution
 	 - role: -VersionProvider
@@ -463,6 +472,10 @@ or the desired plugin configuration manually.
 	 * @Apocalyptic/MetaResources => Dist::Zilla::Plugin::MetaResources
 	 * @Apocalyptic/MetaNoIndex => Dist::Zilla::Plugin::MetaNoIndex
 	 * @Apocalyptic/MetaProvides::Package => Dist::Zilla::Plugin::MetaProvides::Package
+
+	Phase: Before Build
+	 - role: -BeforeBuild
+	 * @Apocalyptic/LocaleMsgfmt => Dist::Zilla::Plugin::LocaleMsgfmt
 
 	Phase: Gather Files
 	 - role: -FileGatherer
@@ -623,10 +636,6 @@ create the .project/.includepath/.settings stuff
 =head3 submit project to ohloh
 
 we need more perl projects on ohloh! there's L<WWW::Ohloh::API>
-
-=head2 locale files
-
-L<Dist::Zilla::Plugin::LocaleMsgfmt> looks interesting, I should auto-enable it if I find the .po files?
 
 =head2 DZP::PkgDist
 
