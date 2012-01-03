@@ -339,7 +339,7 @@ This is equivalent to setting this in your dist.ini:
 	skipfile = MANIFEST.SKIP
 
 	; -- Generate our tests
-	[CompileTests]			; Create a t/00-compile.t file that auto-compiles every module in the dist
+	[Test::Compile]			; Create a t/00-compile.t file that auto-compiles every module in the dist
 	fake_home = 1			; fakes $ENV{HOME} just in case
 	[ApocalypseTests]		; Create a t/apocalypse.t file that runs Test::Apocalypse
 	[ReportVersions::Tiny]		; Report the versions of our prereqs
