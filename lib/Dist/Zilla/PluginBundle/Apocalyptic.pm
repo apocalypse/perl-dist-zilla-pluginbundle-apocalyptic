@@ -7,7 +7,7 @@ use Moose 1.21;
 # The plugins we use ( excluding ones bundled in dzil )
 with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.200004' };	# basically sets the dzil version
 use Pod::Weaver::PluginBundle::Apocalyptic 0.002;
-use Dist::Zilla::Plugin::CompileTests 1.103030;
+use Dist::Zilla::Plugin::Test::Compile 1.112820;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
 use Dist::Zilla::Plugin::Prepender 1.101590;
 use Dist::Zilla::Plugin::Authority 1.001;
@@ -113,7 +113,7 @@ EOC
 
 #	; -- Generate our tests
 	[
-		'CompileTests' => {
+		'Test::Compile' => {
 			# fake the $ENV{HOME} in case smokers don't like us
 			'fake_home' => 1,
 		}
