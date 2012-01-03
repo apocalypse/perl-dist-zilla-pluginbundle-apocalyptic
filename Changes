@@ -2,6 +2,12 @@ Revision history for Perl module Dist::Zilla::PluginBundle::Apocalyptic
 
 {{$NEXT}}
 
+0.002
+	Released: 2012-01-03 01:34:43 UTC
+
+	Use Dist::Zilla::Plugin::Clean
+	Replace Dist::Zilla::Plugin::CompileTests with DZP::Test::Compile as it was deprecated
+
 0.001
 	Released: 2011-03-06 02:21:36 UTC
 
