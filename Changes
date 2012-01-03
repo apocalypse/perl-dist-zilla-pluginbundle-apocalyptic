@@ -2,8 +2,12 @@ Revision history for Perl module Dist::Zilla::PluginBundle::Apocalyptic
 
 {{$NEXT}}
 
+0.003
+	Released: 2012-01-03 05:42:19 UTC
+
 	Use Dist::Zilla::Plugin::LocaleMsgfmt
 	Use Dist::Zilla::Plugin::CheckPrereqsIndexed
+	Clarified the POD with output from dzil dumpphases
 
 0.002
 	Released: 2012-01-03 01:34:43 UTC
