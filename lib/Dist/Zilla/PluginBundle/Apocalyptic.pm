@@ -30,6 +30,7 @@ use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 use Dist::Zilla::Plugin::Clean 0.002;
 use Dist::Zilla::Plugin::LocaleMsgfmt 1.203;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed 0.007;
+use Dist::Zilla::Plugin::DOAP 0.002;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -234,6 +235,7 @@ EOC
 		MetaJSON
 		ReadmeFromPod
 		InstallGuide
+		DOAP
 	),
 	[
 		'Signature' => {
@@ -403,6 +405,7 @@ This is equivalent to setting this in your dist.ini:
 	[MetaJSON]			; create META.json file
 	[ReadmeFromPod]			; create README file
 	[InstallGuide]			; create INSTALL file
+	[DOAP]				; create doap.xml describing the module
 	[Signature]			; create SIGNATURE file when we are releasing ( annoying to enter password during test builds... )
 	sign = archive
 	[Manifest]			; finally, create the MANIFEST file
