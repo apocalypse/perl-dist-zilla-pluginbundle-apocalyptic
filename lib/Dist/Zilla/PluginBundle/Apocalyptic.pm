@@ -31,6 +31,7 @@ use Dist::Zilla::Plugin::Clean 0.002;
 use Dist::Zilla::Plugin::LocaleMsgfmt 1.203;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed 0.007;
 use Dist::Zilla::Plugin::DOAP 0.002;
+use Dist::Zilla::Plugin::Covenant 0.1.0;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -236,6 +237,7 @@ EOC
 		ReadmeFromPod
 		InstallGuide
 		DOAP
+		Covenant
 	),
 	[
 		'Signature' => {
