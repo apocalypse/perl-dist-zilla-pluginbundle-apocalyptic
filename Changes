@@ -5,6 +5,7 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 	Added a bunch of plugins! wheee :)
 	Tweaked the Changes format to be CPAN::Changes::Spec compatible!
 	Changed to DZP::ReadmeAnyFromPod instead of DZP::ReadmeFromPod as we now generate a README.pod in the root for github, thanks RT#85019
+	Enabled ConfigSlicer and PluginRemover for easier bundle manipulation, thanks DAGOLDEN
 
 0.003	2012-01-03 05:42:19 UTC
 

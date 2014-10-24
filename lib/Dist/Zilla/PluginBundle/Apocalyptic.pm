@@ -40,6 +40,12 @@ use Dist::Zilla::Plugin::ReportPhase 0.03;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
 
+# Allow easier config manipulation
+with qw(
+	Dist::Zilla::Role::PluginBundle::Config::Slicer
+	Dist::Zilla::Role::PluginBundle::PluginRemover
+);
+
 sub configure {
 	my $self = shift;
 
@@ -492,6 +498,8 @@ This is equivalent to setting this in your dist.ini:
 
 	[ReportPhase / EXIT]	; reports the dzil build phases
 
+=head1 Setting options
+
 However, this plugin bundle does A LOT of things, so you would need to read the config carefully to see if it does
 anything you don't want to do. You can override the options simply by removing the offending plugin from the bundle
 by using the L<Dist::Zilla::PluginBundle::Filter> package. By doing that you are free to specify alternate plugins,
@@ -512,248 +520,17 @@ or the desired plugin configuration manually.
 	[Git::Push]
 	push_to = gitorious
 
-=head2 dumpphases
+=head2 Newer method to manipulate this bundle
 
-Here is an output of a distribution using Dist::Zilla and only this bundle:
+This PluginBundle now supports L<Dist::Zilla::PluginBundle::ConfigSlicer>, so you can pass in options to the plugins used like this:
 
-	apoc@box:~/eclipse_ws/perl-dist-zilla-pluginbundle-apocalyptic$ dzil dumpphases
+	[@Apocalyptic]
+	Git::Push.push_to = gitorious
 
-	Phase: After Build
-	 - description: something that runs after building is mostly complete
-	 - role: -AfterBuild
-	 - phase_method: after_build
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/DualBuilders => Dist::Zilla::Plugin::DualBuilders
-	 * @Apocalyptic/ReadmeAnyFromPod => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/PodRoot => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/Signature => Dist::Zilla::Plugin::Signature
-	 * @Apocalyptic/CheckSelfDependency => Dist::Zilla::Plugin::CheckSelfDependency
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
+This PluginBundle also supports L<Dist::Zilla::PluginBundle::PluginRemover>, so dropping a plugin is as easy as this:
 
-	Phase: After Mint
-	 - description: something that runs after minting is mostly complete
-	 - role: -AfterMint
-	 - phase_method: after_mint
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: After Release
-	 - description: something that runs after release is mostly complete
-	 - role: -AfterRelease
-	 - phase_method: after_release
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Git::NextVersion => Dist::Zilla::Plugin::Git::NextVersion
-	 * @Apocalyptic/NextRelease => Dist::Zilla::Plugin::NextRelease
-	 * @Apocalyptic/ReadmeAnyFromPod => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/PodRoot => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/Git::Commit => Dist::Zilla::Plugin::Git::Commit
-	 * @Apocalyptic/Git::Tag => Dist::Zilla::Plugin::Git::Tag
-	 * @Apocalyptic/Git::Push => Dist::Zilla::Plugin::Git::Push
-	 * @Apocalyptic/Clean => Dist::Zilla::Plugin::Clean
-	 * @Apocalyptic/SchwartzRatio => Dist::Zilla::Plugin::SchwartzRatio
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Before Archive
-	 - description: something that runs before the archive file is built
-	 - role: -BeforeArchive
-	 - phase_method: before_archive
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Signature => Dist::Zilla::Plugin::Signature
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Before Build
-	 - description: something that runs before building really begins
-	 - role: -BeforeBuild
-	 - phase_method: before_build
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/LocaleMsgfmt => Dist::Zilla::Plugin::LocaleMsgfmt
-	 * @Apocalyptic/ContributorsFromGit => Dist::Zilla::Plugin::ContributorsFromGit
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Before Mint
-	 - description: something that runs before minting really begins
-	 - role: -BeforeMint
-	 - phase_method: before_mint
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Before Release
-	 - description: something that runs before release really begins
-	 - role: -BeforeRelease
-	 - phase_method: before_release
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Git::NextVersion => Dist::Zilla::Plugin::Git::NextVersion
-	 * @Apocalyptic/CheckChangesHasContent => Dist::Zilla::Plugin::CheckChangesHasContent
-	 * @Apocalyptic/Git::Check => Dist::Zilla::Plugin::Git::Check
-	 * @Apocalyptic/TestRelease => Dist::Zilla::Plugin::TestRelease
-	 * @Apocalyptic/CheckPrereqsIndexed => Dist::Zilla::Plugin::CheckPrereqsIndexed
-	 * @Apocalyptic/CheckIssues => Dist::Zilla::Plugin::CheckIssues
-	 * @Apocalyptic/ConfirmRelease => Dist::Zilla::Plugin::ConfirmRelease
-	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
-	 * @Apocalyptic/Git::Tag => Dist::Zilla::Plugin::Git::Tag
-	 * @Apocalyptic/Git::Push => Dist::Zilla::Plugin::Git::Push
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Build Runner
-	 - description: something used as a delegating agent during 'dzil run'
-	 - role: -BuildRunner
-	 - phase_method: build
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
-	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: File Gatherer
-	 - description: something that gathers files into the distribution
-	 - role: -FileGatherer
-	 - phase_method: gather_files
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/GatherDir => Dist::Zilla::Plugin::GatherDir
-	 * @Apocalyptic/MANIFEST.SKIP => Dist::Zilla::Plugin::GenerateFile
-	 * @Apocalyptic/Test::Compile => Dist::Zilla::Plugin::Test::Compile
-	 * @Apocalyptic/ApocalypseTests => Dist::Zilla::Plugin::ApocalypseTests
-	 * @Apocalyptic/ReportVersions::Tiny => Dist::Zilla::Plugin::ReportVersions::Tiny
-	 * @Apocalyptic/ChangelogFromGit => Dist::Zilla::Plugin::ChangelogFromGit
-	 * @Apocalyptic/License => Dist::Zilla::Plugin::License
-	 * @Apocalyptic/MetaYAML => Dist::Zilla::Plugin::MetaYAML
-	 * @Apocalyptic/MetaJSON => Dist::Zilla::Plugin::MetaJSON
-	 * @Apocalyptic/DOAP => Dist::Zilla::Plugin::DOAP
-	 * @Apocalyptic/CPANFile => Dist::Zilla::Plugin::CPANFile
-	 * @Apocalyptic/ReadmeAnyFromPod => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/PodRoot => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/Signature => Dist::Zilla::Plugin::Signature
-	 * @Apocalyptic/Manifest => Dist::Zilla::Plugin::Manifest
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: File Munger
-	 - description: something that alters a file's destination or content
-	 - role: -FileMunger
-	 - phase_method: munge_files
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Test::Compile => Dist::Zilla::Plugin::Test::Compile
-	 * @Apocalyptic/ApocalypseTests => Dist::Zilla::Plugin::ApocalypseTests
-	 * @Apocalyptic/Prepender => Dist::Zilla::Plugin::Prepender
-	 * @Apocalyptic/Authority => Dist::Zilla::Plugin::Authority
-	 * @Apocalyptic/Git::Describe => Dist::Zilla::Plugin::Git::Describe
-	 * @Apocalyptic/PkgVersion => Dist::Zilla::Plugin::PkgVersion
-	 * @Apocalyptic/PodWeaver => Dist::Zilla::Plugin::PodWeaver
-	 * @Apocalyptic/NextRelease => Dist::Zilla::Plugin::NextRelease
-	 * @Apocalyptic/MetaData::BuiltWith => Dist::Zilla::Plugin::MetaData::BuiltWith
-	 * @Apocalyptic/ReadmeAnyFromPod => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/PodRoot => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: File Pruner
-	 - description: something that removes found files from the distribution
-	 - role: -FilePruner
-	 - phase_method: prune_files
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Git::NextVersion => Dist::Zilla::Plugin::Git::NextVersion
-	 * @Apocalyptic/PruneCruft => Dist::Zilla::Plugin::PruneCruft
-	 * @Apocalyptic/ManifestSkip => Dist::Zilla::Plugin::ManifestSkip
-	 * @Apocalyptic/ReadmeAnyFromPod => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/PodRoot => Dist::Zilla::Plugin::ReadmeAnyFromPod
-	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Install Tool
-	 - description: something that creates an install program for a dist
-	 - role: -InstallTool
-	 - phase_method: setup_installer
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
-	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
-	 * @Apocalyptic/DualBuilders => Dist::Zilla::Plugin::DualBuilders
-	 * @Apocalyptic/InstallGuide => Dist::Zilla::Plugin::InstallGuide
-	 * @Apocalyptic/Covenant => Dist::Zilla::Plugin::Covenant
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Meta Provider
-	 - description: something that provides metadata (for META.yml/json)
-	 - role: -MetaProvider
-	 - phase_method: metadata
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Authority => Dist::Zilla::Plugin::Authority
-	 * @Apocalyptic/Bugtracker => Dist::Zilla::Plugin::Bugtracker
-	 * @Apocalyptic/Homepage => Dist::Zilla::Plugin::Homepage
-	 * @Apocalyptic/MetaConfig => Dist::Zilla::Plugin::MetaConfig
-	 * @Apocalyptic/ContributorsFromGit => Dist::Zilla::Plugin::ContributorsFromGit
-	 * @Apocalyptic/Repository => Dist::Zilla::Plugin::Repository
-	 * @Apocalyptic/MetaResources => Dist::Zilla::Plugin::MetaResources
-	 * @Apocalyptic/MetaNoIndex => Dist::Zilla::Plugin::MetaNoIndex
-	 * @Apocalyptic/MetaProvides::Package => Dist::Zilla::Plugin::MetaProvides::Package
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Minting Profile
-	 - description: something that can find a minting profile dir
-	 - role: -MintingProfile
-	 - phase_method: profile_dir
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Module Maker
-	 - description: something that injects module files into the dist
-	 - role: -ModuleMaker
-	 - phase_method: make_module
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Prereq Source
-	 - description: something that registers prerequisites
-	 - role: -PrereqSource
-	 - phase_method: register_prereqs
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/AutoPrereqs => Dist::Zilla::Plugin::AutoPrereqs
-	 * @Apocalyptic/Test::Compile => Dist::Zilla::Plugin::Test::Compile
-	 * @Apocalyptic/ReportVersions::Tiny => Dist::Zilla::Plugin::ReportVersions::Tiny
-	 * @Apocalyptic/MinimumPerl => Dist::Zilla::Plugin::MinimumPerl
-	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
-	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
-	 * @Apocalyptic/DualBuilders => Dist::Zilla::Plugin::DualBuilders
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Releaser
-	 - description: something that makes a release of the dist
-	 - role: -Releaser
-	 - phase_method: release
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/ArchiveRelease => Dist::Zilla::Plugin::ArchiveRelease
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Share Dir
-	 - description: something that picks a directory to install as shared files
-	 - role: -ShareDir
-	 - phase_method: share_dir_map
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Test Runner
-	 - description: something used as a delegating agent to 'dzil test'
-	 - role: -TestRunner
-	 - phase_method: test
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/MakeMaker => Dist::Zilla::Plugin::MakeMaker
-	 * @Apocalyptic/ModuleBuild => Dist::Zilla::Plugin::ModuleBuild
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Phase: Version Provider
-	 - description: something that provides a version number for the dist
-	 - role: -VersionProvider
-	 - phase_method: provide_version
-	 * @Apocalyptic/ENTER => Dist::Zilla::Plugin::ReportPhase
-	 * @Apocalyptic/Git::NextVersion => Dist::Zilla::Plugin::Git::NextVersion
-	 * @Apocalyptic/EXIT => Dist::Zilla::Plugin::ReportPhase
-
-	Unrecognised: Phase not known
-	 - description: These plugins exist but were not in any predefined phase to scan for
-	 * :InstallModules => Dist::Zilla::Plugin::FinderCode
-	 * :IncModules => Dist::Zilla::Plugin::FinderCode
-	 * :TestFiles => Dist::Zilla::Plugin::FinderCode
-	 * :ExecFiles => Dist::Zilla::Plugin::FinderCode
-	 * :ShareFiles => Dist::Zilla::Plugin::FinderCode
-	 * :MainModule => Dist::Zilla::Plugin::FinderCode
-	 * :AllFiles => Dist::Zilla::Plugin::FinderCode
-	 * :NoFiles => Dist::Zilla::Plugin::FinderCode
+	[@Apocalyptic]
+	-remove = ArchiveRelease
 
 =head1 Future Plans
 
