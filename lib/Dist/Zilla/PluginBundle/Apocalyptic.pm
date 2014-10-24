@@ -36,6 +36,7 @@ use Dist::Zilla::Plugin::CheckIssues 0.002;
 use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 use Dist::Zilla::Plugin::Git::Describe 0.003;
+use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -187,6 +188,7 @@ EOC
 		Bugtracker
 		Homepage
 		MetaConfig
+		ContributorsFromGit
 	),
 	[
 		'MetaData::BuiltWith' => {
@@ -396,6 +398,7 @@ This is equivalent to setting this in your dist.ini:
 	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=$dist
 	[Homepage]			; set homepage to http://search.cpan.org/dist/$dist/
 	[MetaConfig]			; dump dzil config into metadata
+	[ContributorsFromGit]   ; generate our CONTRIBUTORS section by looking at the git history
 	[MetaData::BuiltWith]		; dump entire perl modules we used to build into metadata
 	[Repository]			; set git repository path by looking at git configs
 	git_remote = origin
