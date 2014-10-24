@@ -1,21 +1,20 @@
 Revision history for Perl module Dist::Zilla::PluginBundle::Apocalyptic
 
 {{$NEXT}}
+	Added a bunch of plugins! wheee :)
+	Tweaked the Changes format to be CPAN::Changes::Spec compatible!
 
-0.003
-	Released: 2012-01-03 05:42:19 UTC
+0.003	2012-01-03 05:42:19 UTC
 
 	Use Dist::Zilla::Plugin::LocaleMsgfmt
 	Use Dist::Zilla::Plugin::CheckPrereqsIndexed
 	Clarified the POD with output from dzil dumpphases
 
-0.002
-	Released: 2012-01-03 01:34:43 UTC
+0.002	2012-01-03 01:34:43 UTC
 
 	Use Dist::Zilla::Plugin::Clean
 	Replace Dist::Zilla::Plugin::CompileTests with DZP::Test::Compile as it was deprecated
 
-0.001
-	Released: 2011-03-06 02:21:36 UTC
+0.001	2011-03-06 02:21:36 UTC
 
 	initial release

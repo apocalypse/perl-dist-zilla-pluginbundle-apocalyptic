@@ -164,7 +164,7 @@ EOC
 		'NextRelease' => {
 			'time_zone'	=> 'UTC',
 			'filename'	=> 'Changes',
-			'format'	=> '%v%n%tReleased: %{yyyy-MM-dd HH:mm:ss VVVV}d',
+			'format'	=> '%v%t%{yyyy-MM-dd HH:mm:ss VVVV}d',
 		}
 	],
 	[
