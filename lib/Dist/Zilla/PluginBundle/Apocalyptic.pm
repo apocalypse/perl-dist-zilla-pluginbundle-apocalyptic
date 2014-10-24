@@ -62,9 +62,15 @@ sub configure {
 		}
 	],
 
+#	; -- import our files from the git root
+	[
+		'Git::GatherDir' => {
+			'exclude_filename' => 'README.pod',
+		},
+	],
+
 #	; -- start the basic dist skeleton
 	qw(
-		GatherDir
 		PruneCruft
 		AutoPrereqs
 	),
@@ -391,7 +397,8 @@ This is equivalent to setting this in your dist.ini:
 	version_regexp = ^release-(.+)$
 
 	; -- start the basic dist skeleton
-	[GatherDir]			; we start with everything in the dist dir
+	[Git::GatherDir]			; we start with everything in the root dir, ignoring our auto-generated README.pod
+	exclude_filename = README.pod
 	[PruneCruft]			; automatically prune cruft defined by RJBS :)
 	[AutoPrereqs]			; automatically find our prereqs
 	[GenerateFile / MANIFEST.SKIP]	; make our default MANIFEST.SKIP
