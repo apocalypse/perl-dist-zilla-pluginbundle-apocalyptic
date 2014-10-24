@@ -35,6 +35,7 @@ use Dist::Zilla::Plugin::Covenant 0.1.0;
 use Dist::Zilla::Plugin::CheckIssues 0.002;
 use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
+use Dist::Zilla::Plugin::Git::Describe 0.003;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -139,6 +140,7 @@ EOC
 	],
 	qw(
 		Authority
+		Git::Describe
 		PkgVersion
 	),
 	[
@@ -369,6 +371,7 @@ This is equivalent to setting this in your dist.ini:
 	copyright = 1
 	line = use strict; use warnings;
 	[Authority]			; put the $AUTHORITY line in modules and the metadata
+	[Git::Describe]		 ; make a note of the git commit description used in building this release
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
 	config_plugin = @Apocalyptic
