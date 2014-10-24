@@ -5,7 +5,7 @@ package Dist::Zilla::PluginBundle::Apocalyptic;
 use Moose 1.21;
 
 # The plugins we use ( excluding ones bundled in dzil )
-with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '4.200004' };	# basically sets the dzil version
+with 'Dist::Zilla::Role::PluginBundle::Easy' => { -version => '5.011' };	# basically sets the dzil version
 use Pod::Weaver::PluginBundle::Apocalyptic 0.002;
 use Dist::Zilla::Plugin::Test::Compile 1.112820;
 use Dist::Zilla::Plugin::ApocalypseTests 0.01;
@@ -160,7 +160,9 @@ EOC
 	),
 	[
 		'PodWeaver' => {
-			'config_plugin' => '@Apocalyptic',
+			'config_plugin'		=> '@Apocalyptic',
+			'replacer'		=> 'replace_with_comment',
+			'post_code_replacer'	=> 'replace_with_nothing',
 		}
 	],
 	[
@@ -420,6 +422,8 @@ This is equivalent to setting this in your dist.ini:
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
 	config_plugin = @Apocalyptic
+	replacer = replace_with_comment
+	post_code_replacer = replace_with_nothing
 	[LocaleMsgfmt]			; compile .po files to .mo files in share/locale
 	locale = share/locale
 
