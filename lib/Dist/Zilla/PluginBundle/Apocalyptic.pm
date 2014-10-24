@@ -37,6 +37,7 @@ use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 use Dist::Zilla::Plugin::Git::Describe 0.003;
 use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
+use Dist::Zilla::Plugin::CPANFile;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -245,6 +246,7 @@ EOC
 		InstallGuide
 		DOAP
 		Covenant
+		CPANFile
 	),
 	[
 		'Signature' => {
@@ -421,6 +423,7 @@ This is equivalent to setting this in your dist.ini:
 	[InstallGuide]			; create INSTALL file
 	[DOAP]				; create doap.xml describing the module
 	[Covenant]			; create AUTHOR_PLEDGE describing how PAUSE admins can grant co-maint
+	[CPANFile]			; create a 'cpanfile' file describing prereqs
 	[Signature]			; create SIGNATURE file when we are releasing ( annoying to enter password during test builds... )
 	sign = archive
 	[Manifest]			; finally, create the MANIFEST file
