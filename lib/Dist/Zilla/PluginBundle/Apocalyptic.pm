@@ -38,14 +38,20 @@ use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 use Dist::Zilla::Plugin::Git::Describe 0.003;
 use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
 use Dist::Zilla::Plugin::CPANFile;
+use Dist::Zilla::Plugin::ReportPhase 0.03;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
 sub configure {
 	my $self = shift;
 
-#	; -- start off by bumping the version
+
 	$self->add_plugins(
+	[
+                'ReportPhase' => 'ENTER',
+        ],
+
+#	; -- start off by bumping the version
 	[
 		'Git::NextVersion' => {
 			'version_regexp' => '^release-(.+)$',
@@ -308,6 +314,10 @@ EOC
 		Clean
 		SchwartzRatio
 	),
+
+	[
+                'ReportPhase' => 'EXIT',
+        ],
 	);
 }
 
@@ -348,6 +358,8 @@ Don't forget the new global config.ini file added in L<Dist::Zilla> v4!
 This is equivalent to setting this in your dist.ini:
 
 	# Skipping the usual name/author/license/copyright stuff
+
+	[ReportPhase / ENTER]	; reports the dzil build phases
 
 	; -- start off by bumping the version
 	[Git::NextVersion]		; find the last tag, and bump to next version via Version::Next
@@ -454,6 +466,8 @@ This is equivalent to setting this in your dist.ini:
 	push_to = origin
 	[Clean]				; run dzil clean so we have no cruft :)
 	[SchwartzRatio]		; informs us of old distributions lingering on CPAN
+
+	[ReportPhase / EXIT]	; reports the dzil build phases
 
 However, this plugin bundle does A LOT of things, so you would need to read the config carefully to see if it does
 anything you don't want to do. You can override the options simply by removing the offending plugin from the bundle
