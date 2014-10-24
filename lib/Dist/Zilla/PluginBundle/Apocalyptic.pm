@@ -32,6 +32,7 @@ use Dist::Zilla::Plugin::LocaleMsgfmt 1.203;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed 0.007;
 use Dist::Zilla::Plugin::DOAP 0.002;
 use Dist::Zilla::Plugin::Covenant 0.1.0;
+use Dist::Zilla::Plugin::CheckIssues 0.002;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -262,6 +263,7 @@ EOC
 	qw(
 		TestRelease
 		CheckPrereqsIndexed
+		CheckIssues
 		ConfirmRelease
 	),
 
@@ -408,6 +410,7 @@ This is equivalent to setting this in your dist.ini:
 	[ReadmeFromPod]			; create README file
 	[InstallGuide]			; create INSTALL file
 	[DOAP]				; create doap.xml describing the module
+	[Covenant]			; create AUTHOR_PLEDGE describing how PAUSE admins can grant co-maint
 	[Signature]			; create SIGNATURE file when we are releasing ( annoying to enter password during test builds... )
 	sign = archive
 	[Manifest]			; finally, create the MANIFEST file
@@ -419,6 +422,7 @@ This is equivalent to setting this in your dist.ini:
 	changelog = Changes
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
+	[CheckIssues]		; Looks on RT and github for issues that we can review
 	[ConfirmRelease]		; double-check that we ACTUALLY want a release, ha!
 
 	; -- release
