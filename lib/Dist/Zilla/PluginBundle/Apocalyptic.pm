@@ -278,11 +278,19 @@ EOC
 			'allow_dirty'	=> 'README.pod',
 		}
 	],
+
+#	; -- sanity-check our git stuff
+#	TODO we need to fix Git::CheckFor::Fixups so it uses the version_regexp!
+	qw(
+		Git::CheckFor::CorrectBranch
+	) );
+	$self->add_plugins( [ 'Git::CheckFor::MergeConflicts' => {
+		'ignore' => 'CommitLog',
+	} ],
+
+#	; -- more sanity tests before confirming
 	qw(
 		TestRelease
-		Git::CheckFor::Fixups
-		Git::CheckFor::MergeConflicts
-		Git::CheckFor::CorrectBranch
 		CheckPrereqsIndexed
 		CheckSelfDependency
 		CheckIssues
