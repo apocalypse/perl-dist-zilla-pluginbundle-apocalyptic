@@ -19,7 +19,6 @@ use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
 use Dist::Zilla::Plugin::Repository 0.16;
 use Dist::Zilla::Plugin::DualBuilders 1.001;
-use Dist::Zilla::Plugin::ReadmeFromPod 0.14;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
@@ -37,10 +36,8 @@ use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 use Dist::Zilla::Plugin::Git::Describe 0.003;
 use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
-use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::ReportPhase 0.03;
-
-# TODO fix this: http://changes.cpanhq.org/author/APOCAL
+use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 
 sub configure {
 	my $self = shift;
@@ -245,12 +242,20 @@ EOC
 	qw(
 		MetaYAML
 		MetaJSON
-		ReadmeFromPod
 		InstallGuide
 		DOAP
 		Covenant
 		CPANFile
 	),
+	);
+
+#	; -- special stuff for README files
+#		we want README and README.pod but only include README in the built tarball and use README.pod in the root of the project!
+	$self->add_plugins(
+		'ReadmeAnyFromPod',
+	[
+		'ReadmeAnyFromPod' => 'PodRoot',
+	],
 	[
 		'Signature' => {
 			'sign' => 'always',
@@ -269,6 +274,7 @@ EOC
 	[
 		'Git::Check' => {
 			'changelog'	=> 'Changes',
+			'allow_dirty'	=> 'README.pod',
 		}
 	],
 	qw(
@@ -296,6 +302,7 @@ EOC
 			'commit_msg'	=> 'New CPAN release of %N - v%v%n%n%c',
 			'time_zone'	=> 'UTC',
 			'add_files_in'	=> 'releases',
+			'allow_dirty'	=> 'README.pod',
 		}
 	],
 	[
@@ -428,7 +435,8 @@ This is equivalent to setting this in your dist.ini:
 	prefer = build
 	[MetaYAML]			; create META.yml file
 	[MetaJSON]			; create META.json file
-	[ReadmeFromPod]			; create README file
+	[ReadmeAnyFromPod]			; create README file
+	[ReadmeAnyFromPod / PodRoot]	; create README.pod file in repository root ( useful for github! )
 	[InstallGuide]			; create INSTALL file
 	[DOAP]				; create doap.xml describing the module
 	[Covenant]			; create AUTHOR_PLEDGE describing how PAUSE admins can grant co-maint
@@ -442,6 +450,7 @@ This is equivalent to setting this in your dist.ini:
 	changelog = Changes
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
+	allow_dirty = README.pod
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
 	[CheckSelfDependency]           ; make sure we didn't create a recursive dependency situation!
@@ -459,6 +468,7 @@ This is equivalent to setting this in your dist.ini:
 	commit_msg = New CPAN release of %N - v%v%n%n%c
 	time_zone = UTC
 	add_files_in = releases		; add our release tarballs to the repo
+	allow_dirty = README.pod
 	[Git::Tag]			; tag our new release
 	tag_format = release-%v
 	tag_message = Tagged release-%v
@@ -713,8 +723,6 @@ create a Changes file with the boilerplate text in it
 =head3 github integration
 
 automatically create github repo + set description/homepage via L<Dist::Zilla::Plugin::UpdateGitHub> and L<App::GitHub::create> or L<App::GitHub>
-
-GitHub needs a README - can we extract it and upload it on release? ( the current L<Dist::Zilla::Plugin::Readme> doesn't extract the entire POD... )
 
 =head3 gitorious integration
 
