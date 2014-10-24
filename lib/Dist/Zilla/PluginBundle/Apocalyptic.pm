@@ -38,6 +38,7 @@ use Dist::Zilla::Plugin::Git::Describe 0.003;
 use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
 use Dist::Zilla::Plugin::ReportPhase 0.03;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
+use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
 
 sub configure {
 	my $self = shift;
@@ -279,6 +280,9 @@ EOC
 	],
 	qw(
 		TestRelease
+		Git::CheckFor::Fixups
+		Git::CheckFor::MergeConflicts
+		Git::CheckFor::CorrectBranch
 		CheckPrereqsIndexed
 		CheckSelfDependency
 		CheckIssues
@@ -452,6 +456,7 @@ This is equivalent to setting this in your dist.ini:
 	changelog = Changes
 	allow_dirty = README.pod
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
+	[@Git::CheckFor]		; prevent common git errors ( wrong branch, forgotten squash/fixups! )
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
 	[CheckSelfDependency]           ; make sure we didn't create a recursive dependency situation!
 	[CheckIssues]		; Looks on RT and github for issues that we can review

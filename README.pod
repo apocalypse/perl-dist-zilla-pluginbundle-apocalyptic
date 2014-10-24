@@ -131,6 +131,7 @@ This is equivalent to setting this in your dist.ini:
 	changelog = Changes
 	allow_dirty = README.pod
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
+	[@Git::CheckFor]		; prevent common git errors ( wrong branch, forgotten squash/fixups! )
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
 	[CheckSelfDependency]           ; make sure we didn't create a recursive dependency situation!
 	[CheckIssues]		; Looks on RT and github for issues that we can review
@@ -657,6 +658,12 @@ L<https://github.com/apocalypse/perl-dist-zilla-pluginbundle-apocalyptic>
 =head1 AUTHOR
 
 Apocalypse <APOCAL@cpan.org>
+
+=head1 CONTRIBUTOR
+
+=for stopwords Apocalypse
+
+Apocalypse <perl@0ne.us>
 
 =head1 COPYRIGHT AND LICENSE
 
