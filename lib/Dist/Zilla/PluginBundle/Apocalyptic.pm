@@ -34,6 +34,7 @@ use Dist::Zilla::Plugin::DOAP 0.002;
 use Dist::Zilla::Plugin::Covenant 0.1.0;
 use Dist::Zilla::Plugin::CheckIssues 0.002;
 use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
+use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -264,6 +265,7 @@ EOC
 	qw(
 		TestRelease
 		CheckPrereqsIndexed
+		CheckSelfDependency
 		CheckIssues
 		ConfirmRelease
 	),
@@ -424,6 +426,7 @@ This is equivalent to setting this in your dist.ini:
 	changelog = Changes
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
+	[CheckSelfDependency]           ; make sure we didn't create a recursive dependency situation!
 	[CheckIssues]		; Looks on RT and github for issues that we can review
 	[ConfirmRelease]		; double-check that we ACTUALLY want a release, ha!
 
