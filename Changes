@@ -1,6 +1,7 @@
 Revision history for Perl module Dist::Zilla::PluginBundle::Apocalyptic
 
 {{$NEXT}}
+
 	Added a bunch of plugins! wheee :)
 	Tweaked the Changes format to be CPAN::Changes::Spec compatible!
 
