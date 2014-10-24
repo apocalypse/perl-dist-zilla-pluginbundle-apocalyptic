@@ -33,6 +33,7 @@ use Dist::Zilla::Plugin::CheckPrereqsIndexed 0.007;
 use Dist::Zilla::Plugin::DOAP 0.002;
 use Dist::Zilla::Plugin::Covenant 0.1.0;
 use Dist::Zilla::Plugin::CheckIssues 0.002;
+use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 
 # TODO fix this: http://changes.cpanhq.org/author/APOCAL
 
@@ -300,6 +301,7 @@ EOC
 	],
 	qw(
 		Clean
+		SchwartzRatio
 	),
 	);
 }
@@ -442,6 +444,7 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Push]			; automatically push to the "origin" defined in .git/config
 	push_to = origin
 	[Clean]				; run dzil clean so we have no cruft :)
+	[SchwartzRatio]		; informs us of old distributions lingering on CPAN
 
 However, this plugin bundle does A LOT of things, so you would need to read the config carefully to see if it does
 anything you don't want to do. You can override the options simply by removing the offending plugin from the bundle
