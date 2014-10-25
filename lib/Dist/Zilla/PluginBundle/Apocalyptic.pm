@@ -532,7 +532,7 @@ This is equivalent to setting this in your dist.ini:
 	[Clean]				; run dzil clean so we have no cruft :)
 	[SchwartzRatio]		; informs us of old distributions lingering on CPAN
 
-	[ReportPhase / EXIT]	; reports the dzil build phases
+	[ReportPhase / LEAVE]	; reports the dzil build phases
 
 =head1 Setting options
 
