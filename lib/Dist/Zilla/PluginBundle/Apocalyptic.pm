@@ -39,6 +39,7 @@ use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
 use Dist::Zilla::Plugin::ReportPhase 0.03;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
+use Dist::Zilla::Plugin::Git::Remote::Check 0.1.2;
 
 # Allow easier config manipulation
 with qw(
@@ -269,7 +270,11 @@ EOC
 	$self->add_plugins(
 		'ReadmeAnyFromPod',
 	[
-		'ReadmeAnyFromPod' => 'PodRoot',
+		'ReadmeAnyFromPod' => {
+			'type'	=> 'pod',
+			'location'	=> 'root',
+			'phase'	=> 'release',
+		},
 	],
 	[
 		'Signature' => {
@@ -301,6 +306,9 @@ EOC
 	$self->add_plugins( [ 'Git::CheckFor::MergeConflicts' => {
 		'ignore' => 'CommitLog',
 	} ],
+	qw(
+		Git::Remote::Check
+	),
 
 #	; -- more sanity tests before confirming
 	qw(

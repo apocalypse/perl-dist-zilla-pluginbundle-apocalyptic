@@ -13,7 +13,7 @@ Dist::Zilla::PluginBundle::Apocalyptic - Let the apocalypse build your dist!
 
 =head1 VERSION
 
-  This document describes v0.004 of Dist::Zilla::PluginBundle::Apocalyptic - released October 23, 2014 as part of Dist-Zilla-PluginBundle-Apocalyptic.
+  This document describes v0.004 of Dist::Zilla::PluginBundle::Apocalyptic - released October 24, 2014 as part of Dist-Zilla-PluginBundle-Apocalyptic.
 
 =head1 DESCRIPTION
 
@@ -52,7 +52,8 @@ This is equivalent to setting this in your dist.ini:
 	version_regexp = ^release-(.+)$
 
 	; -- start the basic dist skeleton
-	[GatherDir]			; we start with everything in the dist dir
+	[Git::GatherDir]			; we start with everything in the root dir, ignoring our auto-generated README.pod
+	exclude_filename = README.pod
 	[PruneCruft]			; automatically prune cruft defined by RJBS :)
 	[AutoPrereqs]			; automatically find our prereqs
 	[GenerateFile / MANIFEST.SKIP]	; make our default MANIFEST.SKIP
@@ -74,6 +75,8 @@ This is equivalent to setting this in your dist.ini:
 	[PkgVersion]			; put the "our $VERSION = ...;" line in modules
 	[PodWeaver]			; weave our POD and add useful boilerplate
 	config_plugin = @Apocalyptic
+	replacer = replace_with_comment
+	post_code_replacer = replace_with_nothing
 	[LocaleMsgfmt]			; compile .po files to .mo files in share/locale
 	locale = share/locale
 
@@ -430,7 +433,7 @@ L<https://github.com/apocalypse/perl-dist-zilla-pluginbundle-apocalyptic>
 
 Apocalypse <APOCAL@cpan.org>
 
-=head1 CONTRIBUTOR
+=head2 CONTRIBUTOR
 
 =for stopwords Apocalypse
 
