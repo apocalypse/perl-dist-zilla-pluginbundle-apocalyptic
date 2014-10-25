@@ -296,7 +296,7 @@ EOC
 	[
 		'Git::Check' => {
 			'changelog'	=> 'Changes',
-			'allow_dirty'	=> 'README.pod',
+			'allow_dirty'	=> [ 'README.pod', 'Changes' ], # TODO Changes shouldn't be in here but if I don't add it as allow_dirty it doesn't get committed!
 		}
 	],
 
@@ -347,7 +347,7 @@ EOC
 			'commit_msg'	=> 'New CPAN release of %N - v%v%n%n%c',
 			'time_zone'	=> 'UTC',
 			'add_files_in'	=> 'releases',
-			'allow_dirty'	=> 'README.pod',
+			'allow_dirty'	=> [ 'README.pod', 'Changes' ], # TODO Changes shouldn't be in here but if I don't add it as allow_dirty it doesn't get committed!
 		}
 	],
 	[
