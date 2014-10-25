@@ -13,7 +13,7 @@ Dist::Zilla::PluginBundle::Apocalyptic - Let the apocalypse build your dist!
 
 =head1 VERSION
 
-  This document describes v0.004 of Dist::Zilla::PluginBundle::Apocalyptic - released October 24, 2014 as part of Dist-Zilla-PluginBundle-Apocalyptic.
+  This document describes v0.004 of Dist::Zilla::PluginBundle::Apocalyptic - released October 25, 2014 as part of Dist-Zilla-PluginBundle-Apocalyptic.
 
 =head1 DESCRIPTION
 
@@ -133,6 +133,12 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
 	allow_dirty = README.pod
+	[PromptIfStale]		; check our installed dependencies to make sure that we don't have stale modules and prevent release if so
+	check_authordeps = 1
+	check_all_plugins = 1
+	check_all_prereqs = 1
+	phase = release
+	fatal = 1
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[@Git::CheckFor]		; prevent common git errors ( wrong branch, forgotten squash/fixups! )
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
@@ -160,7 +166,7 @@ This is equivalent to setting this in your dist.ini:
 	[Clean]				; run dzil clean so we have no cruft :)
 	[SchwartzRatio]		; informs us of old distributions lingering on CPAN
 
-	[ReportPhase / EXIT]	; reports the dzil build phases
+	[ReportPhase / LEAVE]	; reports the dzil build phases
 
 =head1 Setting options
 

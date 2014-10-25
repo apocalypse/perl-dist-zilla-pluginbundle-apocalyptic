@@ -2,6 +2,8 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 
 {{$NEXT}}
 
+0.004	2014-10-25 20:25:39 UTC
+
 	Added a bunch of plugins! wheee :)
 	Tweaked the Changes format to be CPAN::Changes::Spec compatible!
 	Changed to DZP::ReadmeAnyFromPod instead of DZP::ReadmeFromPod as we now generate a README.pod in the root for github, thanks RT#85019
