@@ -36,7 +36,7 @@ use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 use Dist::Zilla::Plugin::Git::Describe 0.003;
 use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
-use Dist::Zilla::Plugin::ReportPhase 0.03;
+use Dist::Zilla::Plugin::ReportPhase; # TODO we wanted to specify 0.03 but it's weird version stanza blows up! RT#99769
 use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
 use Dist::Zilla::Plugin::Git::Remote::Check 0.1.2;
@@ -50,13 +50,14 @@ with qw(
 sub configure {
 	my $self = shift;
 
-
-	$self->add_plugins(
-	[
-                'ReportPhase' => 'ENTER',
-        ],
+#	; -- Report the phases as a debugging aid
+	# TODO should this module automatically figure it out? if so, go make a pull req!
+	if ( join( ' ', @ARGV ) =~ /--verbose/i ) {
+		$self->add_plugins( [ 'ReportPhase' => 'ENTER' ] );
+	}
 
 #	; -- start off by bumping the version
+	$self->add_plugins(
 	[
 		'Git::NextVersion' => {
 			'version_regexp' => '^release-(.+)$',
@@ -355,11 +356,11 @@ EOC
 		Clean
 		SchwartzRatio
 	),
-
-	[
-                'ReportPhase' => 'EXIT',
-        ],
 	);
+
+	if ( join( ' ', @ARGV ) =~ /--verbose/i ) {
+		$self->add_plugins( [ 'ReportPhase' => 'LEAVE' ] );
+	}
 }
 
 no Moose;
