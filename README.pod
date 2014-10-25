@@ -95,8 +95,8 @@ This is equivalent to setting this in your dist.ini:
 	[ShareDir]			; automatically install File::ShareDir files from share/ ( if it exists )
 	dir = share
 	[MinimumPerl]			; automatically find the minimum perl version required and add it to prereqs
-	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=$dist
-	[Homepage]			; set homepage to http://search.cpan.org/dist/$dist/
+	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Apocalyptic
+	[Homepage]			; set homepage to http://search.cpan.org/dist/Dist-Zilla-PluginBundle-Apocalyptic/
 	[MetaConfig]			; dump dzil config into metadata
 	[ContributorsFromGit]   ; generate our CONTRIBUTORS section by looking at the git history
 	[MetaData::BuiltWith]		; dump entire perl modules we used to build into metadata
@@ -191,7 +191,7 @@ This PluginBundle now supports L<Dist::Zilla::PluginBundle::ConfigSlicer>, so yo
 	[@Apocalyptic]
 	Git::Push.push_to = gitorious
 
-This PluginBundle also supports L<Dist::Zilla::PluginBundle::PluginRemover>, so dropping a plugin is as easy as this:
+This PluginBundle also supports L<Dist::Zilla::Role::PluginBundle::PluginRemover>, so dropping a plugin is as easy as this:
 
 	[@Apocalyptic]
 	-remove = ArchiveRelease
