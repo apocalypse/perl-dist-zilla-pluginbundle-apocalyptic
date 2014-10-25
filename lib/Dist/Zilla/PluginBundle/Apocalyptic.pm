@@ -40,6 +40,7 @@ use Dist::Zilla::Plugin::ReportPhase; # TODO we wanted to specify 0.03 but it's 
 use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
 use Dist::Zilla::Plugin::Git::Remote::Check 0.1.2;
+use Dist::Zilla::Plugin::PromptIfStale 0.028;
 
 # Allow easier config manipulation
 with qw(
@@ -312,6 +313,15 @@ EOC
 	),
 
 #	; -- more sanity tests before confirming
+	[
+		'PromptIfStale' => {
+			'check_authordeps'	=> 1,
+			'check_all_plugins'	=> 1,
+			'check_all_prereqs'	=> 1,
+			'phase'			=> 'release',
+			'fatal'			=> 1,
+		},
+	],
 	qw(
 		TestRelease
 		CheckPrereqsIndexed
@@ -489,6 +499,12 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Check]			; check working path for any uncommitted stuff ( exempt Changes because it will be committed after release )
 	changelog = Changes
 	allow_dirty = README.pod
+	[PromptIfStale]		; check our installed dependencies to make sure that we don't have stale modules and prevent release if so
+	check_authordeps = 1
+	check_all_plugins = 1
+	check_all_prereqs = 1
+	phase = release
+	fatal = 1
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[@Git::CheckFor]		; prevent common git errors ( wrong branch, forgotten squash/fixups! )
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
