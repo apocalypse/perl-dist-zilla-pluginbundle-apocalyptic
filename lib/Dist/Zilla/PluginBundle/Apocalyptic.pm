@@ -272,7 +272,7 @@ EOC
 	$self->add_plugins(
 		'ReadmeAnyFromPod',
 	[
-		'ReadmeAnyFromPod' => {
+		'ReadmeAnyFromPod', 'pod for github' => {
 			'type'	=> 'pod',
 			'location'	=> 'root',
 			'phase'	=> 'release',
