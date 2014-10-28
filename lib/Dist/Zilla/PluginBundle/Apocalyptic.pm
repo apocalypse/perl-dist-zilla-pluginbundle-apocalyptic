@@ -18,7 +18,6 @@ use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
 use Dist::Zilla::Plugin::Repository 0.16;
-use Dist::Zilla::Plugin::DualBuilders 1.001;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
@@ -41,6 +40,8 @@ use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
 use Dist::Zilla::Plugin::Git::Remote::Check 0.1.2;
 use Dist::Zilla::Plugin::PromptIfStale 0.028;
+use Dist::Zilla::Plugin::ModuleBuildTiny 0.007;
+use Dist::Zilla::Plugin::MakeMaker::Fallback 0.013;
 
 # Allow easier config manipulation
 with qw(
@@ -249,14 +250,9 @@ EOC
 	],
 	qw(
 		License
-		MakeMaker
-		ModuleBuild
+		ModuleBuildTiny
+		MakeMaker::Fallback
 	),
-	[
-		'DualBuilders' => {
-			'prefer' => 'build',
-		}
-	],
 	qw(
 		MetaYAML
 		MetaJSON
@@ -477,10 +473,8 @@ This is equivalent to setting this in your dist.ini:
 	[MetaProvides::Package]		; get provides from package definitions in files
 	meta_noindex = 1
 	[License]			; create LICENSE file
-	[MakeMaker]			; create Makefile.PL file
-	[ModuleBuild]			; create Build.PL file
-	[DualBuilders]			; have M::B and EU::MM but select only M::B as prereq
-	prefer = build
+	[ModuleBuildTiny]		; create Build.PL file
+	[MakeMaker::Fallback]	; create Makefile.PL file for older Perls
 	[MetaYAML]			; create META.yml file
 	[MetaJSON]			; create META.json file
 	[ReadmeAnyFromPod]			; create README file
