@@ -34,7 +34,6 @@ use Dist::Zilla::Plugin::CheckIssues 0.002;
 use Dist::Zilla::Plugin::SchwartzRatio 0.2.0;
 use Dist::Zilla::Plugin::CheckSelfDependency 0.007;
 use Dist::Zilla::Plugin::Git::Describe 0.003;
-use Dist::Zilla::Plugin::ContributorsFromGit 0.014;
 use Dist::Zilla::Plugin::ReportPhase; # TODO we wanted to specify 0.03 but it's weird version stanza blows up! RT#99769
 use Dist::Zilla::Plugin::ReadmeAnyFromPod 0.142470;
 use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch 0.011;
@@ -42,6 +41,7 @@ use Dist::Zilla::Plugin::Git::Remote::Check 0.1.2;
 use Dist::Zilla::Plugin::PromptIfStale 0.028;
 use Dist::Zilla::Plugin::ModuleBuildTiny 0.007;
 use Dist::Zilla::Plugin::MakeMaker::Fallback 0.013;
+use Dist::Zilla::Plugin::Git::Contributors 0.008;
 
 # Allow easier config manipulation
 with qw(
@@ -208,7 +208,7 @@ EOC
 		Bugtracker
 		Homepage
 		MetaConfig
-		ContributorsFromGit
+		Git::Contributors
 	),
 	[
 		'MetaData::BuiltWith' => {
@@ -460,7 +460,7 @@ This is equivalent to setting this in your dist.ini:
 	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Apocalyptic
 	[Homepage]			; set homepage to http://search.cpan.org/dist/Dist-Zilla-PluginBundle-Apocalyptic/
 	[MetaConfig]			; dump dzil config into metadata
-	[ContributorsFromGit]   ; generate our CONTRIBUTORS section by looking at the git history
+	[Git::Contributors]   	; generate our CONTRIBUTORS section by looking at the git history
 	[MetaData::BuiltWith]		; dump entire perl modules we used to build into metadata
 	[Repository]			; set git repository path by looking at git configs
 	git_remote = origin

@@ -3,6 +3,7 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 {{$NEXT}}
 
 	Dropped the use of the DualBuilders plugin in favor of MakeMaker::Fallback and ModuleBuildTiny ( thanks ETHER! )
+	Dropped the use of the ContributorsFromGit plugin in favor of Git::Contributors RT#99083 ( thanks ETHER! )
 
 0.004	2014-10-25 20:25:39 UTC
 
