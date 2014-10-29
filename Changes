@@ -2,6 +2,8 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 
 {{$NEXT}}
 
+	Use the ChangeStats::Git plugin for spiffy code statistics :)
+
 0.005	2014-10-28 18:09:23 UTC
 
 	Dropped the use of the DualBuilders plugin in favor of MakeMaker::Fallback and ModuleBuildTiny ( thanks ETHER! )

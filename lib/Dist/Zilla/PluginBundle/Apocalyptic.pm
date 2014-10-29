@@ -42,6 +42,7 @@ use Dist::Zilla::Plugin::PromptIfStale 0.028;
 use Dist::Zilla::Plugin::ModuleBuildTiny 0.007;
 use Dist::Zilla::Plugin::MakeMaker::Fallback 0.013;
 use Dist::Zilla::Plugin::Git::Contributors 0.008;
+use Dist::Zilla::Plugin::ChangeStats::Git 0.3.0;
 
 # Allow easier config manipulation
 with qw(
@@ -272,6 +273,12 @@ EOC
 			'phase'	=> 'release',
 		},
 	],
+	[
+                'ChangeStats::Git' => {
+                        'group' => 'STATISTICS',
+                        'release_regexp' => '^(release-.+)$',
+                },
+        ],
 	[
 		'Signature' => {
 			'sign' => 'always',
