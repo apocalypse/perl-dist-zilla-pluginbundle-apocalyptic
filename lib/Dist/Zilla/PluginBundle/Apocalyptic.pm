@@ -276,7 +276,7 @@ EOC
 	[
                 'ChangeStats::Git' => {
                         'group' => 'STATISTICS',
-                        'release_regexp' => '^(release-.+)$',
+			'auto_previous_tag' => 1,
                 },
         ],
 	[
