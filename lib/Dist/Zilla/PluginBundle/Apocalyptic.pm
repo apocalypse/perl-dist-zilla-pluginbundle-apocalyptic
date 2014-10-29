@@ -261,12 +261,10 @@ EOC
 		Covenant
 		CPANFile
 	),
-	);
 
 #	; -- special stuff for README files
 #		we want README and README.pod but only include README in the built tarball and use README.pod in the root of the project!
-	$self->add_plugins(
-		'ReadmeAnyFromPod',
+	'ReadmeAnyFromPod',
 	[
 		'ReadmeAnyFromPod', 'pod for github' => {
 			'type'	=> 'pod',
@@ -300,10 +298,12 @@ EOC
 #	TODO we need to fix Git::CheckFor::Fixups so it uses the version_regexp!
 	qw(
 		Git::CheckFor::CorrectBranch
-	) );
-	$self->add_plugins( [ 'Git::CheckFor::MergeConflicts' => {
-		'ignore' => 'CommitLog',
-	} ],
+	),
+	[
+		'Git::CheckFor::MergeConflicts' => {
+			'ignore' => 'CommitLog',
+		}
+	],
 	qw(
 		Git::Remote::Check
 	),
