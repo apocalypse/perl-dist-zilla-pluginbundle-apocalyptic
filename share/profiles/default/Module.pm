@@ -12,6 +12,6 @@ package {{ $name }};
 
 =head1 DESCRIPTION
 
-	...
+...
 
 =cut

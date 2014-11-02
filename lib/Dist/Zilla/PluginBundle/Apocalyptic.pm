@@ -224,7 +224,6 @@ EOC
 	[
 		'Repository' => {
 			# TODO convert "origin" to "github"
-			# TODO actually use gitorious!
 			'git_remote' => 'origin',
 		}
 	],
@@ -365,7 +364,7 @@ EOC
 	],
 	[
 		'Git::Push' => {
-			# TODO add "github", "gitorious" support somehow... introspect the Git config?
+			# TODO add "github" support somehow... introspect the Git config?
 			'push_to'	=> 'origin',
 		}
 	],
