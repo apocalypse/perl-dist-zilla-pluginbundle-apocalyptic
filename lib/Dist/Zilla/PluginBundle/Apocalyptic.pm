@@ -23,7 +23,6 @@ use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
 use Dist::Zilla::Plugin::Git 1.110500;
 use Dist::Zilla::Plugin::ArchiveRelease 3.01;
-use Dist::Zilla::Plugin::ReportVersions::Tiny 1.02;
 use Dist::Zilla::Plugin::MetaData::BuiltWith 0.01018204;
 use Dist::Zilla::Plugin::Clean 0.002;
 use Dist::Zilla::Plugin::LocaleMsgfmt 1.203;
@@ -43,6 +42,7 @@ use Dist::Zilla::Plugin::ModuleBuildTiny 0.007;
 use Dist::Zilla::Plugin::MakeMaker::Fallback 0.013;
 use Dist::Zilla::Plugin::Git::Contributors 0.008;
 use Dist::Zilla::Plugin::ChangeStats::Git 0.3.0;
+use Dist::Zilla::Plugin::Test::ReportPrereqs 0.019;
 
 # Allow easier config manipulation
 with qw(
@@ -148,7 +148,7 @@ EOC
 	],
 	qw(
 		ApocalypseTests
-		ReportVersions::Tiny
+		Test::ReportPrereqs
 	),
 
 #	; -- munge files
@@ -433,7 +433,7 @@ This is equivalent to setting this in your dist.ini:
 	[Test::Compile]			; Create a t/00-compile.t file that auto-compiles every module in the dist
 	fake_home = 1			; fakes $ENV{HOME} just in case
 	[ApocalypseTests]		; Create a t/apocalypse.t file that runs Test::Apocalypse
-	[ReportVersions::Tiny]		; Report the versions of our prereqs
+	[Test::ReportPrereqs]		; Report the versions of our prereqs
 
 	; -- munge files
 	[Prepender]			; automatically add lines following the shebang in modules

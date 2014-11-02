@@ -3,6 +3,7 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 {{$NEXT}}
 
 	Use the ChangeStats::Git plugin for spiffy code statistics :)
+	Migrate to Plugin::Test::ReportPrereqs as it's prettier :)
 
 0.005	2014-10-28 18:09:23 UTC
 
