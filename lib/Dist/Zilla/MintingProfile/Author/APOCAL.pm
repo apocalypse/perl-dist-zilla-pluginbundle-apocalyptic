@@ -23,6 +23,12 @@ sub profile_dir {
 	confess "Can't find profile $profile_name via $self: it should be in $profile_dir";
 }
 
+# I prefer to use perl-dist-name :)
+# TODO wait for new release of dzil with this!
+sub mint_dir {
+	return 'perl-' . lc( $_[1] );
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
