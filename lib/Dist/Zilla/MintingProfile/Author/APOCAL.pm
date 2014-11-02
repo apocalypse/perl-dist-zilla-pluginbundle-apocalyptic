@@ -25,4 +25,12 @@ __PACKAGE__->meta->make_immutable;
 
 =pod
 
+=head1 SYNOPSIS
+
+	dzil new -P Author::APOCAL Foo::Bar
+
+=head1 DESCRIPTION
+
+Apocalypse's MintingProfile :)
+
 =cut
