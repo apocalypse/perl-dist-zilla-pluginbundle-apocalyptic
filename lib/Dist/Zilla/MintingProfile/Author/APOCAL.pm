@@ -11,7 +11,7 @@ use Carp qw( confess );
 
 sub profile_dir {
 	my ($self, $profile_name) = @_;
-	$profile_name /= 'default';
+	$profile_name //= 'default';
 	die 'minting requires perl 5.014' unless $] >= 5.013002;
 	my $dist_name = 'Dist-Zilla-PluginBundle-Apocalyptic';
 	my $profile_dir = dir( File::ShareDir::dist_dir($dist_name) )->subdir( 'profiles', $profile_name );
