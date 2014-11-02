@@ -170,11 +170,14 @@ EOC
 			'post_code_replacer'	=> 'replace_with_nothing',
 		}
 	],
+
+	# not always present!
+	( -d 'share/locale' ?
 	[
 		'LocaleMsgfmt' => {
 			'locale' => 'share/locale',
 		},
-	],
+	] : () ),
 
 #	; -- update the Changelog
 	[
@@ -200,7 +203,7 @@ EOC
 	}
 	if ( -d 'share' ) {
 		$self->add_plugins( [ 'ShareDir' => {
-			'dir'	=> 'bin',
+			'dir'	=> 'share',
 		} ] );
 	}
 	$self->add_plugins(
