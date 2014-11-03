@@ -72,6 +72,7 @@ sub configure {
 	[
 		'Git::GatherDir' => {
 			'exclude_filename' => 'README.pod',
+			'include_dotfiles' => 1,
 		},
 	],
 
