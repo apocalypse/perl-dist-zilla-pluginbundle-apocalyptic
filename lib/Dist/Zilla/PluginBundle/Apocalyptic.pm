@@ -156,7 +156,7 @@ EOC
 		'Prepender' => {
 			'copyright'	=> 1,
 			'line'		=> 'use strict; use warnings;',
-			'skip'	=> 'Module\.pm', # don't prepend our skeleton file!
+			'skip'	=> 'Module\.pm$', # don't prepend our skeleton file!
 		}
 	],
 	qw(
