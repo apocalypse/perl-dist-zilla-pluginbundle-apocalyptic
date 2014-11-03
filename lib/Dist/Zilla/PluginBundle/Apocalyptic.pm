@@ -626,19 +626,6 @@ create a Changes file with the boilerplate text in it
 
 automatically create github repo + set description/homepage via L<Dist::Zilla::Plugin::UpdateGitHub> and L<App::GitHub::create> or L<App::GitHub>
 
-=head3 gitorious integration
-
-unfortunately there's no perl API for gitorious? L<http://www.mail-archive.com/gitorious@googlegroups.com/msg01016.html>
-
-=head3 .gitignore creation
-
-it should contain only one line - the damned dist build dir "/Foo-Dist-*"
-also, it needs the "/.build/" line?
-
-=head3 Eclipse files creation
-
-create the .project/.includepath/.settings stuff
-
 =head3 submit project to ohloh
 
 we need more perl projects on ohloh! there's L<WWW::Ohloh::API>
