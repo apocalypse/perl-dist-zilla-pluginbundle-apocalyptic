@@ -242,16 +242,20 @@ EOC
 	foreach my $d ( qw( inc t xt examples share eg mylib ) ) {
 		push( @dirs, $d ) if -d $d;
 	}
+
+	# if we try to use the plugin with empty @dirs, this happens...
+#	got impossible zero-value <directory> key at /usr/local/share/perl/5.18.2/Config/MVP/Assembler/WithBundles.pm line 147, <GEN1> line 2.
+#	Config::MVP::Assembler::WithBundles::_add_bundle_contents(Dist::Zilla::MVP::Assembler::Zilla=HASH(0x39dc688), "bundle_config", HASH(0x3a9f898)) called at /usr/local/share/perl/5.18.2/Config/MVP/Assembler/WithBundles.pm line 82
 	$self->add_plugins(
-	[
+	( scalar @dirs ? [
 		'MetaNoIndex' => {
 			'directory' => \@dirs,
 		}
-	],
+	] : () ),
 	[
 		'MetaProvides::Package' => { # needs to be added after MetaNoIndex
 			# don't report the noindex directories
-			'meta_noindex' => 1,
+			( scalar @dirs ? ('meta_noindex' => 1) : () ),
 		}
 	],
 	qw(

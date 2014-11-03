@@ -6,6 +6,7 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 	Migrate to Plugin::Test::ReportPrereqs as it's prettier :)
 	Add my own MintingProfile copied from ETHER, thanks!
 	Use GitHub::Update to update the homepage on release
+	Include MetaNoIndex only when it's actually needed!
 
 0.005	2014-10-28 18:09:23 UTC
 
