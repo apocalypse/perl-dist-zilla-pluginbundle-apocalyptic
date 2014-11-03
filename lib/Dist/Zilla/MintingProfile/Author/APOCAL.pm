@@ -12,6 +12,7 @@ use Carp qw( confess );
 # use the plugins for metadata
 use Dist::Zilla::Plugin::GitHub::Create 0.38;
 use Dist::Zilla::Plugin::Git::PushInitial 0.02;
+use Dist::Zilla::Plugin::Bitbucket::Create 0.001;
 
 sub profile_dir {
 	my ($self, $profile_name) = @_;

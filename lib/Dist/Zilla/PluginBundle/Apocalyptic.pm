@@ -17,7 +17,6 @@ use Dist::Zilla::Plugin::MinimumPerl 1.001;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.102670;
 use Dist::Zilla::Plugin::Homepage 1.101420;
-use Dist::Zilla::Plugin::Repository 0.16;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
@@ -44,6 +43,7 @@ use Dist::Zilla::Plugin::Git::Contributors 0.008;
 use Dist::Zilla::Plugin::ChangeStats::Git 0.3.0;
 use Dist::Zilla::Plugin::Test::ReportPrereqs 0.019;
 use Dist::Zilla::Plugin::GitHub::Update 0.38;
+use Dist::Zilla::Plugin::GithubMeta 0.46;
 
 # Allow easier config manipulation
 with qw(
@@ -224,9 +224,10 @@ EOC
 		}
 	],
 	[
-		'Repository' => {
+		'GithubMeta' => {
 			# TODO convert "origin" to "github"
-			'git_remote' => 'origin',
+			'remote' => 'origin',
+			'issues' => 0, # we use the CPAN RT tracker
 		}
 	],
 	[
@@ -377,7 +378,7 @@ EOC
 	[
 		'GitHub::Update' => {
 			# TODO add "github" support
-			#'remote' => 'github',
+			'remote' => 'origin',
 			'meta_home' => 1,
 		}
 	],
@@ -485,8 +486,9 @@ This is equivalent to setting this in your dist.ini:
 	[MetaConfig]			; dump dzil config into metadata
 	[Git::Contributors]   	; generate our CONTRIBUTORS section by looking at the git history
 	[MetaData::BuiltWith]		; dump entire perl modules we used to build into metadata
-	[Repository]			; set git repository path by looking at git configs
-	git_remote = origin
+	[GithubMeta]			; set git repository path by looking at github data
+	remote = origin
+	issues = 0	; we use CPAN RT bugtracker
 	[MetaResources]			; add arbitrary resources to metadata
 	license = http://dev.perl.org/licenses/
 
