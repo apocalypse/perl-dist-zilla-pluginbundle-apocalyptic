@@ -43,6 +43,7 @@ use Dist::Zilla::Plugin::MakeMaker::Fallback 0.013;
 use Dist::Zilla::Plugin::Git::Contributors 0.008;
 use Dist::Zilla::Plugin::ChangeStats::Git 0.3.0;
 use Dist::Zilla::Plugin::Test::ReportPrereqs 0.019;
+use Dist::Zilla::Plugin::GitHub::Update 0.38;
 
 # Allow easier config manipulation
 with qw(
@@ -368,6 +369,13 @@ EOC
 			'push_to'	=> 'origin',
 		}
 	],
+	[
+		'GitHub::Update' => {
+			# TODO add "github" support
+			#'remote' => 'github',
+			'meta_home' => 1,
+		}
+	],
 	qw(
 		Clean
 		SchwartzRatio
@@ -533,6 +541,7 @@ This is equivalent to setting this in your dist.ini:
 	tag_message = Tagged release-%v
 	[Git::Push]			; automatically push to the "origin" defined in .git/config
 	push_to = origin
+	[GitHub::Update]		; update the github meta stuff ( set your github login/password in ~/.github via Config::Identity )
 	[Clean]				; run dzil clean so we have no cruft :)
 	[SchwartzRatio]		; informs us of old distributions lingering on CPAN
 
@@ -610,23 +619,7 @@ From Dist::Zilla::PluginBundle::FLORA
         ? $self->add_plugins('TaskWeaver')
         : $self->add_plugins([ 'PodWeaver' => { config_plugin => '@FLORA' } ]);
 
-=head2 I would like to start digging into the C<dzil new> command and see how to automate stuff in it.
-
-=head3 Changes creation
-
-create a Changes file with the boilerplate text in it
-
-	Revision history for Dist::Zilla::PluginBundle::Apocalyptic
-
-	{{$NEXT}}
-
-		initial release
-
-=head3 github integration
-
-automatically create github repo + set description/homepage via L<Dist::Zilla::Plugin::UpdateGitHub> and L<App::GitHub::create> or L<App::GitHub>
-
-=head3 submit project to ohloh
+=head2 submit project to ohloh
 
 we need more perl projects on ohloh! there's L<WWW::Ohloh::API>
 
