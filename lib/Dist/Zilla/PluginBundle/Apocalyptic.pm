@@ -16,7 +16,6 @@ use Dist::Zilla::Plugin::ChangelogFromGit 0.002;
 use Dist::Zilla::Plugin::MinimumPerl 1.001;
 use Dist::Zilla::Plugin::MetaProvides::Package 1.12044908;
 use Dist::Zilla::Plugin::Bugtracker 1.102670;
-use Dist::Zilla::Plugin::Homepage 1.101420;
 use Dist::Zilla::Plugin::InstallGuide 1.101461;
 use Dist::Zilla::Plugin::Signature 1.100930;
 use Dist::Zilla::Plugin::CheckChangesHasContent 0.003;
@@ -44,6 +43,7 @@ use Dist::Zilla::Plugin::ChangeStats::Git 0.3.0;
 use Dist::Zilla::Plugin::Test::ReportPrereqs 0.019;
 use Dist::Zilla::Plugin::GitHub::Update 0.38;
 use Dist::Zilla::Plugin::GithubMeta 0.46;
+use Dist::Zilla::Plugin::Bitbucket::Update 0.001;
 
 # Allow easier config manipulation
 with qw(
@@ -213,7 +213,6 @@ EOC
 	qw(
 		MinimumPerl
 		Bugtracker
-		Homepage
 		MetaConfig
 		Git::Contributors
 	),
@@ -332,7 +331,7 @@ EOC
 			'check_all_plugins'	=> 1,
 			'check_all_prereqs'	=> 1,
 			'phase'			=> 'release',
-			'fatal'			=> 1,
+			'fatal'			=> 0,
 		},
 	],
 	qw(
@@ -373,13 +372,18 @@ EOC
 		'Git::Push' => {
 			# TODO add "github" support somehow... introspect the Git config?
 			'push_to'	=> 'origin',
+			'push_to' => 'bitbucket',
 		}
 	],
 	[
 		'GitHub::Update' => {
-			# TODO add "github" support
 			'remote' => 'origin',
 			'meta_home' => 1,
+		}
+	],
+	[
+		'Bitbucket::Update' => {
+			'remote' => 'bitbucket',
 		}
 	],
 	qw(
@@ -482,13 +486,12 @@ This is equivalent to setting this in your dist.ini:
 	dir = share
 	[MinimumPerl]			; automatically find the minimum perl version required and add it to prereqs
 	[Bugtracker]			; set bugtracker to http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-Apocalyptic
-	[Homepage]			; set homepage to http://search.cpan.org/dist/Dist-Zilla-PluginBundle-Apocalyptic/
 	[MetaConfig]			; dump dzil config into metadata
 	[Git::Contributors]   	; generate our CONTRIBUTORS section by looking at the git history
 	[MetaData::BuiltWith]		; dump entire perl modules we used to build into metadata
 	[GithubMeta]			; set git repository path by looking at github data
 	remote = origin
-	issues = 0	; we use CPAN RT bugtracker
+	issues = 0	; we prefer CPAN RT bugtracker
 	[MetaResources]			; add arbitrary resources to metadata
 	license = http://dev.perl.org/licenses/
 
@@ -523,7 +526,6 @@ This is equivalent to setting this in your dist.ini:
 	check_all_plugins = 1
 	check_all_prereqs = 1
 	phase = release
-	fatal = 1
 	[TestRelease]                   ; make sure that we won't release a FAIL distro :)
 	[@Git::CheckFor]		; prevent common git errors ( wrong branch, forgotten squash/fixups! )
 	[CheckPrereqsIndexed]		; make sure that our prereqs actually exist on CPAN
@@ -546,9 +548,11 @@ This is equivalent to setting this in your dist.ini:
 	[Git::Tag]			; tag our new release
 	tag_format = release-%v
 	tag_message = Tagged release-%v
-	[Git::Push]			; automatically push to the "origin" defined in .git/config
+	[Git::Push]			; automatically push to the "origin" defined in .git/config AND our bitbucket :)
 	push_to = origin
-	[GitHub::Update]		; update the github meta stuff ( set your github login/password in ~/.github via Config::Identity )
+	push_to = bitbucket
+	[GitHub::Update]		; update the github meta stuff
+	[Bitbucket::Update]	; update the Bitbucket meta stuff
 	[Clean]				; run dzil clean so we have no cruft :)
 	[SchwartzRatio]		; informs us of old distributions lingering on CPAN
 
