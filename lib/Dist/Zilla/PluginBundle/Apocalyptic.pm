@@ -44,6 +44,7 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs 0.019;
 use Dist::Zilla::Plugin::GitHub::Update 0.38;
 use Dist::Zilla::Plugin::GithubMeta 0.46;
 use Dist::Zilla::Plugin::Bitbucket::Update 0.001;
+use Dist::Zilla::Plugin::Metadata 3.03;
 
 # Allow easier config manipulation
 with qw(
@@ -234,6 +235,15 @@ EOC
 			# TODO add the usual list of stuff found in my POD? ( cpants, bla bla )
 			'license'	=> 'http://dev.perl.org/licenses/',
 		}
+	],
+	[
+		# https://metacpan.org/about/metadata
+		'Metadata' => {
+			'x_IRC' => {
+				'url' => 'irc://irc.perl.org/#perl-help',
+				'web' => 'https://chat.mibbit.com/?channel=%23perl-help&server=irc.perl.org',
+			},
+		},
 	],
 	);
 
@@ -494,6 +504,9 @@ This is equivalent to setting this in your dist.ini:
 	issues = 0	; we prefer CPAN RT bugtracker
 	[MetaResources]			; add arbitrary resources to metadata
 	license = http://dev.perl.org/licenses/
+	[Metadata]				; advertise the default IRC chatroom :)
+	x_IRC.url = irc://irc.perl.org/#perl-help
+	x_IRC.web = https://chat.mibbit.com/?channel=%23perl-help&server=irc.perl.org
 
 	; -- generate meta files
 	[MetaNoIndex]			; tell PAUSE to not index those directories
