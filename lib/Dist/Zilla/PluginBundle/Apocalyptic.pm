@@ -379,8 +379,7 @@ EOC
 	[
 		'Git::Push' => {
 			# TODO add "github" support somehow... introspect the Git config?
-			'push_to'	=> 'origin',
-			'push_to' => 'bitbucket',
+			'push_to'	=> [ 'origin', 'bitbucket' ],
 		}
 	],
 	[
