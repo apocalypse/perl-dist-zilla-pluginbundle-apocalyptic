@@ -239,10 +239,8 @@ EOC
 	[
 		# https://metacpan.org/about/metadata
 		'Metadata' => {
-			'x_IRC' => {
-				'url' => 'irc://irc.perl.org/#perl-help',
-				'web' => 'https://chat.mibbit.com/?channel=%23perl-help&server=irc.perl.org',
-			},
+			'x_IRC.url' => 'irc://irc.perl.org/#perl-help',
+			'x_IRC.web' => 'https://chat.mibbit.com/?channel=%23perl-help&server=irc.perl.org',
 		},
 	],
 	);
