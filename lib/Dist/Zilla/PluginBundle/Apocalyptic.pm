@@ -55,10 +55,9 @@ with qw(
 has is_task => (
 	is => 'ro',
 	isa => 'Bool',
-	lazy => 1,
 	default => sub {
 		my $ini = Config::INI::Reader->read_file('./dist.ini');
-		if ( $ini->{'_'}->{'name'} =~ /^(?:Bundle|Task)\-/ ) {
+		if ( $ini->{'_'}->{'name'} =~ /^Task\-/ ) {
 			return 1;
 		} else {
 			return 0;
@@ -173,7 +172,7 @@ EOC
 		'Prepender' => {
 			'copyright'	=> 1,
 			'line'		=> 'use strict; use warnings;',
-			'skip'	=> 'Module\.pm$', # don't prepend our skeleton file!
+			'skip'	=> '^share\/profiles\/default\/Module\.pm$', # don't prepend our skeleton file!
 		}
 	],
 	qw(
