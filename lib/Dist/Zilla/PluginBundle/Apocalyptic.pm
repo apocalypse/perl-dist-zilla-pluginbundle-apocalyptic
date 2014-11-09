@@ -52,6 +52,13 @@ with qw(
 	Dist::Zilla::Role::PluginBundle::PluginRemover
 );
 
+has is_task => (
+	is => 'ro',
+	isa => 'Bool',
+	lazy => 1,
+	default => sub { $_[0]->payload->{task} || 0 },
+);
+
 sub configure {
 	my $self = shift;
 
@@ -167,8 +174,9 @@ EOC
 		Git::Describe
 		PkgVersion
 	),
+
 	[
-		'PodWeaver' => {
+		( $self->is_task ? 'TaskWeaver' : 'PodWeaver' ) => {
 			'config_plugin'		=> '@Apocalyptic',
 			'replacer'		=> 'replace_with_comment',
 			'post_code_replacer'	=> 'replace_with_nothing',

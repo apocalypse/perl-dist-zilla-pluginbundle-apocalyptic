@@ -10,6 +10,7 @@ Revision history for Dist::Zilla::PluginBundle::Apocalyptic
 	Dropped the use of the Repository plugin in favor of GithubMeta as testing with Bitbucket made it explode!
 	Enabled the Bitbucket plugins so we have a backup, yay!
 	Use the Metadata plugin to add x_IRC so we can advertise on MetaCPAN :)
+	Use the TaskWeaver Pod plugin for Task:: dists
 
 0.005	2014-10-28 18:09:23 UTC
 
