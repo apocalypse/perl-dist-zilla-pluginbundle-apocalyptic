@@ -45,6 +45,7 @@ use Dist::Zilla::Plugin::GitHub::Update 0.38;
 use Dist::Zilla::Plugin::GithubMeta 0.46;
 use Dist::Zilla::Plugin::Bitbucket::Update 0.001;
 use Dist::Zilla::Plugin::Metadata 3.03;
+use Dist::Zilla::Plugin::TaskWeaver 0.101627;
 
 # Allow easier config manipulation
 with qw(
@@ -186,6 +187,7 @@ EOC
 			'config_plugin'		=> '@Apocalyptic',
 			'replacer'		=> 'replace_with_comment',
 			'post_code_replacer'	=> 'replace_with_nothing',
+			( $self->is_task ? ('placeholder_test' => 0) : () ),
 		}
 	],
 
